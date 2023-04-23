@@ -24,7 +24,7 @@ ul li {
 }
 
 .left-item {
-    flex: 1;
+    width: 320px;
     font-family: "Purisa", Geneva, Tahoma, sans-serif;
     font-size: 25px;
     font-weight: 700;
@@ -45,7 +45,7 @@ ul li {
 }
 
 .right-items {
-    flex: 1;
+    width: 320px;
     text-align: right;
 }
 

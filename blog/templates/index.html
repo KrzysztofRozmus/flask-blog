@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
     <title>Flask Blog</title>
 </head>
 
 <body>
     {% include "navbar.html" %}
 
-
+    {% include "footer.html" %}
 </body>
 
 </html>

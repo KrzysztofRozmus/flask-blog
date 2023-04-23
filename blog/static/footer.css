@@ -1,0 +1,54 @@
+footer {
+    background-color: black;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 170px;
+    padding: 0 250px;
+
+}
+
+footer img {
+    width: 45px;
+}
+
+.links-to-icons li {
+    display: block;
+    margin: 10px 0;
+}
+
+.links-to-icons a {
+    color: white;
+}
+
+.links-to-icons a:hover {
+    color: orange;
+    transition: all 0.2s ease 0s;
+}
+
+
+.icons-and-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icons li {
+    margin: 0 5px;
+}
+
+.icons img:hover {
+    transform: scale(1.1);
+    transition: all 0.2s ease 0s;
+
+}
+
+p {
+    color: white;
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
