@@ -1,0 +1,67 @@
+.container {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    margin: 10rem auto;
+    max-width: 450px;
+    height: 500px;
+    position: relative;
+    background-color: white;
+}
+
+.title {
+    position: absolute;
+    top: 12px;
+}
+
+.shortcut-link {
+    position: absolute;
+    bottom: 8px;
+}
+
+.signup-form,
+.login-form {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    padding: 4rem;
+}
+
+.signup-form {
+    top: 3rem;
+}
+
+.login-form {
+    top: 5rem;
+}
+
+.title,
+.signup-form,
+.shortcut-link {
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.form-field {
+    width: 100%;
+    font-size: 19px;
+    padding: 6px;
+}
+
+.submit-button {
+    margin-top: 2.5rem;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    background-image: linear-gradient(45deg, dodgerblue, purple);
+}
+
+.submit-button:active {
+    transform: translateY(2px);
+}
+
+.submit-button:hover {
+    cursor: pointer;
+}

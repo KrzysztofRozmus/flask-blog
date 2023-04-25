@@ -8,11 +8,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup&login.css') }}">
+
+
+
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
     <title>Flask Blog</title>
+    {% endif %}
 </head>
 
 <body>
     {% include "navbar.html" %}
+
+    {% block content %}
+    {% endblock content %}
+
+
 
     {% include "footer.html" %}
 </body>
