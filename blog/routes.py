@@ -1,7 +1,8 @@
 from blog import app, bcrypt, db
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 from blog.forms import SignupForm, LoginForm
 from blog.models import User
+from wtforms.validators import ValidationError
 
 
 @app.route("/")
@@ -27,7 +28,9 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for("home"))
+        flash("The account was successfully created. You can log in now.", "success")
+        return redirect(url_for("login"))
+
     else:
         return render_template("signup.html", form=form)
 
@@ -37,14 +40,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        # Check if a user exists in the database
-        user = User.query.filter_by(email=form.email.data).first()
-
-        if user:
-            # Check that the user's password is the same as the one in the database
-            user_password = bcrypt.check_password_hash(user.password, form.password.data)
-
-            if user_password:
-                return redirect(url_for("home"))
+        flash("Logged in successfully.", "success")
+        return redirect(url_for("home"))        
     else:
         return render_template("login.html", form=form)

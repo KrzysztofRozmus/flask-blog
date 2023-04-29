@@ -1,6 +1,6 @@
 .container {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-    margin: 10rem auto;
+    margin: 4rem auto;
     max-width: 450px;
     height: 500px;
     position: relative;
@@ -36,6 +36,7 @@
 
 .title,
 .signup-form,
+.login-form,
 .shortcut-link {
     left: 0;
     right: 0;
@@ -49,7 +50,7 @@
 }
 
 .submit-button {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     padding: 10px;
     border-radius: 20px;
     border: none;
@@ -64,4 +65,9 @@
 
 .submit-button:hover {
     cursor: pointer;
+}
+
+.errors {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
 }

@@ -10,8 +10,8 @@
     <form class="login-form" method="post">
         {{ form.hidden_tag() }}
 
-        {{ render_field(form.email, class="form-field") }}
-        {{ render_field(form.password, class="form-field") }}
+        {{ render_field(form.email, class="form-field email") }}
+        {{ render_field(form.password, class="form-field password") }}
 
         {{ form.submit(class="submit-button") }}
     </form>
