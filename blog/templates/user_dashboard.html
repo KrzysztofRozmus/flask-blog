@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+
+    <h1 class="title-user">User Dashboard</h1>
+    <hr>
+
+    {% if current_user.is_authenticated %}
+        <h3> Hi {{ current_user.username }}!</h3>
+    {% endif %}
+
+{% endblock content%}

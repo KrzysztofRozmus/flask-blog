@@ -1,20 +1,30 @@
 <header>
     <nav>
         <a class="left-item" href="{{ url_for('home') }}">Flask Blog</a>
+
         <ul class="center-items">
+
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="">Books</a></li>
             <li><a href="">Something</a></li>
             <li><a href="">About</a></li>
+            
         </ul>
 
         <ul class="right-items">
-            <!-- <li><a id="dashboard-link" href="">Dashboard</a></li> -->
-            <!-- <li><a id="logout-link" href="">Logout</a></li> -->
 
-            <li><a id="login-link" href="{{ url_for('login') }}">Login</a></li>
-            <li><a id="signup-link" href="{{ url_for('signup') }}">Signup</a></li>
+            {% if current_user.is_authenticated %}
+
+                <li><a id="dashboard-link" href="{{ url_for('user_dashboard') }}">Dashboard</a></li>
+                <li><a id="logout-link" href="{{ url_for('logout') }}">Logout</a></li>
+
+            {% else %}
+
+                <li><a id="login-link" href="{{ url_for('login') }}">Login</a></li>
+                <li><a id="signup-link" href="{{ url_for('signup') }}">Signup</a></li>
+
+            {% endif %}
+
         </ul>
     </nav>
 </header>
-

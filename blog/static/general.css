@@ -9,7 +9,7 @@ body {
     margin: 0 350px
 }
 
-/* ============================== Flash messages ============================== */
+/* ============================ Flash messages ============================ */
 
 .flash-messages {
     margin-top: 4rem;
@@ -60,6 +60,8 @@ body {
     right: 0;
     bottom: 1px;
 }
+
+/* ============================ Errors in log in and sign up pages ============================ */
 
 .errors {
     margin-top: 1px;

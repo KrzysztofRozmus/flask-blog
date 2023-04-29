@@ -27,8 +27,8 @@ class SignupForm(FlaskForm):
     submit = SubmitField("Create account")
 
     def validate_username(self, username):
-        username = User.query.filter_by(username=username.data).first()
-        if username:
+        usrname = User.query.filter_by(username=username.data).first()
+        if usrname or username.data == "admin":
             raise ValidationError("That username is already taken.", "danger")
 
     def validate_email(self, email):
