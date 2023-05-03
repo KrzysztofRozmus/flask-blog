@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, EmailField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from blog.models import User
 from blog import bcrypt
+from sqlalchemy import event
 
 
 class SignupForm(FlaskForm):
@@ -25,6 +26,14 @@ class SignupForm(FlaskForm):
                                      render_kw={"placeholder": "Confirm password"})
 
     submit = SubmitField("Create account")
+
+    # Password hash when user is created in Admin Panel.
+    # hash_user_password method from: https://stackoverflow.com/a/57100627/20072823
+    @event.listens_for(User.password, 'set', retval=True)
+    def hash_user_password(target, value, oldvalue, initiator):
+        if value != oldvalue:
+            return bcrypt.generate_password_hash(value, 14).decode("utf-8")
+        return value
 
     def validate_username(self, username):
         usrname = User.query.filter_by(username=username.data).first()
@@ -59,7 +68,6 @@ class LoginForm(FlaskForm):
             user = User.query.filter_by(email=self.user.email).first()
             user_password = bcrypt.check_password_hash(user.password, password.data)
             if not user_password:
-                print(ValidationError)
                 raise ValidationError("Invalid password.", "danger")
 
         # Handle this error if self.user.email is NoneType. It occurs if user put invalid email.

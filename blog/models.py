@@ -1,8 +1,8 @@
-from blog import db, admin, current_datetime
+from blog import db, admin, current_datetime, bcrypt
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from flask import redirect, url_for, abort
+from flask import abort
 
 
 class User(db.Model, UserMixin):
@@ -24,17 +24,17 @@ class User(db.Model, UserMixin):
 
 
 # Grants access to Admin Panel only to Admin.
-class AdminPanelAccess(ModelView):
-    
+class UserView(ModelView):
+
     def is_accessible(self):
         try:
             if current_user.username == "Admin" and current_user._is_admin == True:
                 return current_user.is_authenticated
             else:
                 return abort(404)
-            
+
         except AttributeError:
             return abort(404)
 
 
-admin.add_view(AdminPanelAccess(User, db.session))
+admin.add_view(UserView(User, db.session))
