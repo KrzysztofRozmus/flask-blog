@@ -16,11 +16,11 @@ class SignupForm(FlaskForm):
                        render_kw={"placeholder": "Email"})
 
     password = PasswordField(validators=[DataRequired(),
-                                         Length(min=3, max=40)],
+                                         Length(min=3, max=60)],
                              render_kw={"placeholder": "Password"})
 
     confirm_password = PasswordField(validators=[DataRequired(),
-                                                 Length(min=3, max=40),
+                                                 Length(min=3, max=60),
                                                  EqualTo("password", "Field must be equal to Password.")],
                                      render_kw={"placeholder": "Confirm password"})
 
@@ -39,12 +39,10 @@ class SignupForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = EmailField(validators=[DataRequired(),
-                                   Email(),
-                                   Length(min=9, max=30)],
+                                   Email()],
                        render_kw={"placeholder": "Email"})
 
-    password = PasswordField(validators=[DataRequired(),
-                                         Length(min=3, max=40)],
+    password = PasswordField(validators=[DataRequired()],
                              render_kw={"placeholder": "Password"})
 
     submit = SubmitField("Login")

@@ -29,9 +29,15 @@ def signup():
         hashed_password = bcrypt.generate_password_hash(form.password.data, 14).decode("utf-8")
 
         # User data from the form to the database
-        user = User(username=form.username.data,
-                    email=form.email.data,
-                    password=hashed_password)
+        if form.username.data == "Admin":
+            user = User(username=form.username.data,
+                        email=form.email.data,
+                        password=hashed_password,
+                        _is_admin=True)
+        else:
+            user = User(username=form.username.data,
+                        email=form.email.data,
+                        password=hashed_password)
 
         # Add and save user data to the database
         db.session.add(user)
@@ -57,7 +63,11 @@ def login():
         login_user(user, remember=True, duration=timedelta(minutes=1))
 
         flash(f"Logged in successfully. Hello {current_user.username} :)", "success")
-        return redirect(url_for("user_dashboard"))
+
+        if current_user.username == "Admin":
+            return (redirect(url_for("admin.index")))
+        else:
+            return redirect(url_for("user_dashboard"))
     else:
         return render_template("login.html", form=form)
 

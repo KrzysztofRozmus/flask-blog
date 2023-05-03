@@ -64,9 +64,9 @@ body {
 /* ============================ Errors in log in and sign up pages ============================ */
 
 .errors {
-    margin-top: 1px;
+    margin-top: 2px;
     color: red;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
 }
 
