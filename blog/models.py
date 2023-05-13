@@ -1,4 +1,4 @@
-from blog import db, admin, current_datetime, bcrypt
+from blog import db, admin, current_datetime
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
 
 # Grants access to Admin Panel only to Admin.
 class UserView(ModelView):
+    column_exclude_list = ["password"]
 
     def is_accessible(self):
         try:
@@ -35,6 +36,11 @@ class UserView(ModelView):
 
         except AttributeError:
             return abort(404)
+
+
+class PostView(ModelView):
+    column_exclude_list = ["content"]
+    form_excluded_columns = ["author", "date_joined"]
 
 
 admin.add_view(UserView(User, db.session))

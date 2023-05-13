@@ -1,4 +1,4 @@
-from blog import app, bcrypt, db, login_manager
+from blog import app, db, login_manager
 from flask import render_template, redirect, url_for, flash
 from blog.forms import SignupForm, LoginForm
 from blog.models import User
@@ -25,19 +25,17 @@ def signup():
         return redirect(url_for("user_dashboard"))
 
     elif form.validate_on_submit():
-        # Hash of the password given in the form
-        hashed_password = bcrypt.generate_password_hash(form.password.data, 14).decode("utf-8")
 
         # User data from the form to the database
         if form.username.data == "Admin":
             user = User(username=form.username.data,
                         email=form.email.data,
-                        password=hashed_password,
+                        password=form.password.data,
                         _is_admin=True)
         else:
             user = User(username=form.username.data,
                         email=form.email.data,
-                        password=hashed_password)
+                        password=form.password.data)
 
         # Add and save user data to the database
         db.session.add(user)
@@ -62,7 +60,8 @@ def login():
 
         login_user(user, remember=True, duration=timedelta(minutes=1))
 
-        flash(f"Logged in successfully. Hello {current_user.username} :)", "success")
+        flash(
+            f"Logged in successfully. Hello {current_user.username} :)", "success")
 
         if current_user.username == "Admin":
             return (redirect(url_for("admin.index")))
