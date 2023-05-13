@@ -6,7 +6,13 @@
 
 body {
     background-color: lightgrey;
-    margin: 0 350px
+    margin: 0;
+    background-color: rgb(233, 233, 233);
+}
+
+.body {
+    margin: 0 350px;
+    height: 1500px;
 }
 
 /* ============================ Flash messages ============================ */
