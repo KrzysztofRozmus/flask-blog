@@ -23,6 +23,23 @@ class User(db.Model, UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.password}')"
 
 
+class Post(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.Date, nullable=False, default=current_datetime.date())
+    time_posted = db.Column(db.Time, nullable=False, default=current_datetime.time())
+    author = db.Column(db.String, nullable=False, default="Admin")
+
+    def __init__(self, title, content, author):
+        self.title = title
+        self.content = content
+        self.author = author
+
+    def __repr__(self):
+        return f"User('{self.title}', '{self.content}', '{self.author}')"
+
+
 # Grants access to Admin Panel only to Admin.
 class UserView(ModelView):
     column_exclude_list = ["password"]
@@ -40,7 +57,8 @@ class UserView(ModelView):
 
 class PostView(ModelView):
     column_exclude_list = ["content"]
-    form_excluded_columns = ["author", "date_joined"]
+    form_excluded_columns = ["author", "date_posted", "time_posted"]
 
 
 admin.add_view(UserView(User, db.session))
+admin.add_view(PostView(Post, db.session))

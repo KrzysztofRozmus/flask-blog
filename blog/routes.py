@@ -1,7 +1,7 @@
 from blog import app, db, login_manager
 from flask import render_template, redirect, url_for, flash
 from blog.forms import SignupForm, LoginForm
-from blog.models import User
+from blog.models import User, Post
 from datetime import timedelta
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -14,7 +14,12 @@ def load_user(email):
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("index.html")
+    # Variable used for display advertisement box only on home page.
+    home_page = True
+    image_file = url_for("static", filename="pictures/pic01.png")
+
+    posts = Post.query.all()
+    return render_template("index.html", posts=posts, home_page=home_page, image_file=image_file)
 
 
 @app.route("/signup", methods=("GET", "POST"))

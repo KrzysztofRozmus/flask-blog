@@ -79,3 +79,84 @@ body {
 dd {
     height: 40px;
 }
+
+
+
+/* ============================ Display posts on home page ============================ */
+
+
+.home-page-posts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 150px;
+}
+
+.posts-container {
+    display: grid;
+    height: 500px;
+    gap: 30px;
+}
+
+.post-box {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    height: 160px;
+    background-color: white;
+}
+
+.image {
+    flex: 1;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post {
+    flex: 3;
+    flex-direction: column;
+}
+
+.post-title {
+    flex: 4;
+    align-items: center;
+    margin-left: 10px;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.post-title a {
+    text-decoration: none;
+    color: black;
+}
+
+.post-date {
+    flex: 1;
+    align-items: end;
+    justify-content: flex-end;
+    padding: 2px 7px;
+    font-style: italic;
+    border-top: 1px solid black;
+}
+
+.adv-box {
+    border: 1px dashed red;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+.advertisement-container {
+    display: grid;
+    border: 1px solid black;
+    padding: 8px;
+}
+
+.post-box,
+.post,
+.post-title,
+.post-date,
+.adv-box {
+    display: flex;
+}
