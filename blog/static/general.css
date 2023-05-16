@@ -129,6 +129,7 @@ dd {
 .post-title a {
     text-decoration: none;
     color: black;
+    padding: 1px;
 }
 
 .post-date {

@@ -60,5 +60,6 @@ class PostView(ModelView):
     form_excluded_columns = ["author", "date_posted", "time_posted"]
 
 
+
 admin.add_view(UserView(User, db.session))
 admin.add_view(PostView(Post, db.session))

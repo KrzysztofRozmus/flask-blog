@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_admin import Admin
 from datetime import datetime
+from flask_pagedown import PageDown
 
 
 app = Flask(__name__)
@@ -15,6 +16,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user.db"
 db.init_app(app)
 
 bcrypt = Bcrypt(app)
+
+pagedown = PageDown()
+pagedown.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='signup&login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='posts_page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='user_dashboard.css') }}">
 
 
@@ -41,6 +42,7 @@
         {% block content %}
         {% endblock content %}
 
+        {% if home_page %}
         <div class="home-page-posts">
             <div class="posts-container">
                 {% for post in posts %}
@@ -53,7 +55,7 @@
 
                     <div class="post">
                         <div class="post-title">
-                            <a href="#">{{ post.title }}</a>
+                            <a href="{{ url_for('posts_page', id=post.id)}}">{{ post.title }}</a>
                         </div>
                         <div class="post-date">{{ post.date_posted }}</div>
                     </div>
@@ -63,7 +65,7 @@
                 {% endfor %}
             </div>
 
-            {% if home_page %}
+            
             <div class="advertisement-container">
                 <div class="adv-box">
                     <h3>Advertisement 1</h3>

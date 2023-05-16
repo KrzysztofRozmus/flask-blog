@@ -18,7 +18,7 @@ def home():
     home_page = True
     image_file = url_for("static", filename="pictures/pic01.png")
 
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.date_posted.desc()).all()
     return render_template("index.html", posts=posts, home_page=home_page, image_file=image_file)
 
 
@@ -88,3 +88,8 @@ def logout():
     logout_user()
     flash("You have been log out", "info")
     return redirect(url_for("home"))
+
+@app.route("/posts_page/<int:id>")
+def posts_page(id):
+    posts = Post.query.get_or_404(id)
+    return render_template("posts_page.html", posts=posts)

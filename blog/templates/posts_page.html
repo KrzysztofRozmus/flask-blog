@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+    <div class="display-post">
+        <h1>{{ posts.title }}</h1>
+        <p class="posts-page-date"> Post date: {{ posts.date_posted }}</p>
+        <p>{{ posts.content }}</p>
+    </div>
+
+{% endblock content %}
