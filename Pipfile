@@ -11,6 +11,7 @@ flask-sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-login = "*"
 flask-admin = "*"
+flask-pagedown = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -1,9 +1,10 @@
 from blog import db, admin, current_datetime
 from flask_login import UserMixin
+from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from flask import abort
-
+from flask_pagedown.fields import PageDownField
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,15 +21,14 @@ class User(db.Model, UserMixin):
         self._is_admin = _is_admin
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.password}')"
+        return f"User('{self.username}', '{self.email}')"
 
 
 class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.Date, nullable=False, default=current_datetime.date())
-    time_posted = db.Column(db.Time, nullable=False, default=current_datetime.time())
+    date_posted = db.Column(db.DateTime, nullable=False, default=current_datetime)
     author = db.Column(db.String, nullable=False, default="Admin")
 
     def __init__(self, title, content, author):
@@ -43,6 +43,7 @@ class Post(db.Model, UserMixin):
 # Grants access to Admin Panel only to Admin.
 class UserView(ModelView):
     column_exclude_list = ["password"]
+    form_excluded_columns = ["date_joined"]
 
     def is_accessible(self):
         try:
@@ -55,11 +56,24 @@ class UserView(ModelView):
             return abort(404)
 
 
-class PostView(ModelView):
+class PostView(ModelView):    
+    # Extends default admin/model/create.html template.
+    create_template = "post_create.html"
+    
+    # Extends default admin/model/edit.html template.    
+    edit_template = "post_edit.html"
+    
+    # Replacing TextAreaField for PageDownField.
+    def scaffold_form(self):
+        form_class = super(PostView, self).scaffold_form()
+        form_class.content = PageDownField()
+        return form_class
+    
     column_exclude_list = ["content"]
-    form_excluded_columns = ["author", "date_posted", "time_posted"]
-
-
-
+    form_excluded_columns = ["author", "date_posted"]
+    form_widget_args = {"content": {"rows": 20}}
+    
+    
+    
 admin.add_view(UserView(User, db.session))
 admin.add_view(PostView(Post, db.session))

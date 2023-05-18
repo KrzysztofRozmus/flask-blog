@@ -60,13 +60,10 @@ def login():
         return redirect(url_for("user_dashboard"))
 
     elif form.validate_on_submit():
-
         user = User.query.filter_by(email=form.email.data).first()
-
+        
         login_user(user, remember=True, duration=timedelta(minutes=1))
-
-        flash(
-            f"Logged in successfully. Hello {current_user.username} :)", "success")
+        flash(f"Logged in successfully. Hello {current_user.username} :)", "success")
 
         if current_user.username == "Admin":
             return (redirect(url_for("admin.index")))
@@ -88,6 +85,7 @@ def logout():
     logout_user()
     flash("You have been log out", "info")
     return redirect(url_for("home"))
+
 
 @app.route("/posts_page/<int:id>")
 def posts_page(id):

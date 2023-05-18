@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='posts_page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='user_dashboard.css') }}">
 
-
-
     {% if title %}
         <title>{{ title }}</title>
     {% else %}
@@ -57,7 +55,7 @@
                         <div class="post-title">
                             <a href="{{ url_for('posts_page', id=post.id)}}">{{ post.title }}</a>
                         </div>
-                        <div class="post-date">{{ post.date_posted }}</div>
+                        <div class="post-date">{{ post.date_posted.date() }}</div>
                     </div>
                     
                 </div>
