@@ -1,7 +1,7 @@
 .display-post {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     background-color: white;
-    padding: 30px;
+    padding: 35px;
     white-space: pre-line;
 }
 
@@ -10,6 +10,14 @@
 }
 
 .posts-page-date {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+#post-title {
+    text-align: center;
+}
+
+#post-date {
     font-style: italic;
-    margin-bottom: 45px;
 }

@@ -12,6 +12,8 @@ flask-bcrypt = "*"
 flask-login = "*"
 flask-admin = "*"
 flask-pagedown = "*"
+markdown = "*"
+bleach = "*"
 
 [dev-packages]
 autopep8 = "*"

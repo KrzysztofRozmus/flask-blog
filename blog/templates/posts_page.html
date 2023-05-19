@@ -2,10 +2,14 @@
 
 {% block content %}
 
-    <div class="display-post">
-        <h1>{{ posts.title }}</h1>
-        <p class="posts-page-date"> Post date: {{ posts.date_posted }}</p>
-        <p>{{ posts.content }}</p>
-    </div>
+<div class="display-post">
+    <h1 id="post-title">{{ posts.title }}</h1>
+    <p class="posts-page-date"> Post date: <span id="post-date">{{ posts.date_posted.date() }}</span></p>
+    {% if posts.content_in_html %}
+        {{ posts.content_in_html | safe }}
+    {% else %}
+        {{ posts.content }}
+    {% endif %}
+</div>
 
 {% endblock content %}
