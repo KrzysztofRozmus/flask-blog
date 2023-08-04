@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 flask = "*"
 python-dotenv = "*"
+flask-wtf = "*"
+email-validator = "*"
 
 [dev-packages]
 

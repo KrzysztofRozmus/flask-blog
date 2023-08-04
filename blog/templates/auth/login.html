@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+
+{% block content %}
+<div class="auth-container">
+
+    <h1 class="title">Login</h1>
+
+    <form class="login-form" method="post">
+        {{ form.hidden_tag() }}
+
+        {{ render_field(form.email, class="form-field email") }}
+        {{ render_field(form.password, class="form-field password") }}
+
+        <a href="#" class="forgot-password-link">Forgot Password?</a>
+
+        {{ form.submit(class="login-button") }}
+    </form>
+
+    <small class="redirect">Don't have an account yet?<a href="{{ url_for('signup')}}">Signup</a></small>
+</div>
+{% endblock content %}

@@ -1,0 +1,85 @@
+.auth-container {
+    width: 26rem;
+    height: 33rem;
+    background-color: white;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    border-radius: 5px;
+    margin-top: 11rem;
+    position: relative;
+}
+
+.forgot-password-link {
+    align-self: flex-end;
+}
+
+.title,
+.signup-form,
+.login-form,
+.redirect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.title {
+    top: 1rem;
+}
+
+.signup-form,
+.login-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.6rem;
+    padding: 2rem;
+}
+
+.signup-form {
+    top: 5rem;
+}
+
+.login-form {
+    top: 7rem;
+}
+
+.redirect {
+    bottom: 1rem;
+}
+
+.redirect a {
+    margin-left: 8px;
+}
+
+.form-field {
+    width: 100%;
+    font-size: 17px;
+    padding: 6px;
+}
+
+.login-button {
+    margin-top: 1.8rem;
+}
+
+.signup-button {
+    margin-top: 1.4rem;
+}
+
+.login-button,
+.signup-button {
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    color: black;
+    font-size: 18px;
+    background-image: linear-gradient(45deg, steelblue, lightskyblue);
+}
+
+.login-button:active,
+.signup-button:active {
+    transform: translateY(2px);
+}
+
+.login-button:hover,
+.signup-button:hover {
+    cursor: pointer;
+}
