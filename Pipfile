@@ -8,6 +8,7 @@ flask = "*"
 python-dotenv = "*"
 flask-wtf = "*"
 email-validator = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 

@@ -1,12 +1,39 @@
 {% macro render_field(field) %}
 
-<dd>{{ field(**kwargs)|safe }}
+<dd class="form-box-error">{{ field(**kwargs)|safe }}
     {% if field.errors %}
-    <ul class=errors>
-        {% for error in field.errors %}
-        <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
+        {% if field.name == "username" %}
+            <style>
+                .username {
+                    border: 1px solid red;
+                }
+            </style>
+        {% elif field.name == "email" %}
+            <style>
+                .email {
+                    border: 1px solid red;
+                }
+            </style>
+        {% elif field.name == "password" %}
+            <style>
+                .password {
+                    border: 1px solid red;
+                }
+            </style>
+        {% elif field.name == "confirm_password" %}
+            <style>
+                .confirm_password {
+                    border: 1px solid red;
+                }
+            </style>
+        {% endif %}
+
+        <ul class=errors>
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 </dd>
+
 {% endmacro %}

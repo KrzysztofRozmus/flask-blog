@@ -26,11 +26,17 @@
     top: 1rem;
 }
 
-.signup-form,
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    padding: 2rem;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
-    row-gap: 1.6rem;
+    row-gap: 2.1rem;
     padding: 2rem;
 }
 
