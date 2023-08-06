@@ -77,8 +77,17 @@ nav li {
     transition: all 0.2s ease 0s;
 }
 
-/* Responsive navbar */
+#logout-link {
+    border-color: orange;
+    color: orange;
+}
 
+#logout-link:hover {
+    background-color: orange;
+    color: white;
+}
+
+/* Responsive navbar */
 @media (max-width: 1100px) {
     .header {
         padding: 0 1rem;

@@ -22,9 +22,11 @@
             </ul>
         </div>
 
+        {% if current_user.is_authenticated %}
         <div class="user-main">
-            <h2></h2>
+            <h2> Hello {{ current_user.username }}</h2>
         </div>
+        {% endif %}
         
     </div>
 
