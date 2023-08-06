@@ -1,0 +1,78 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: block;
+}
+
+.main-content {
+    background-color: lightgray;
+    min-height: 1100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ================================ Forms errors ================================ */
+.errors {
+    margin-top: 0;
+    color: red;
+    font-size: 12px;
+    text-align: left;
+    list-style: none;
+}
+
+/* Thanks to this value does not change the distance between the boxes of the login or
+signup form after displaying an error under the box */
+.form-box-error {
+    height: 40px;
+}
+
+
+/* ================================ Flash messages ================================ */
+.success,
+.danger,
+.info {
+    display: flex;
+    height: 2.7rem;
+    width: 75rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    list-style: none;
+    margin-top: 4.5rem;
+    margin-bottom: -5rem;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.success {
+    color: rgb(24, 109, 41);
+    border-left: 5px solid green;
+    background-color: rgb(185, 224, 189);
+}
+
+.danger {
+    color: rgb(180, 53, 53);
+    border-left: 5px solid red;
+    background-color: rgb(238, 201, 201);
+}
+
+.info {
+    color: rgb(22, 106, 145);
+    border-left: 5px solid rgb(5, 165, 240);
+    /* background-color: rgb(189, 222, 238); */
+    background-color: lightskyblue;
+}
+
+.flash-close-button {
+    position: absolute;
+    right: 0.6rem;
+    font-size: 2.2rem;
+    cursor: pointer;
+}
