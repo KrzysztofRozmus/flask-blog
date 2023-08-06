@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='signup&login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user/dashboard.css') }}">
 
     <title>Flask Blog</title>
 </head>
@@ -19,10 +20,8 @@
 <body>
     {% include "navbar.html" %}
 
-    <div class="main-content">
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
             <ul>
                 {% for category, message in messages %}
                     <li class="{{ category }}">
@@ -31,11 +30,13 @@
                     </li>
                 {% endfor %}
             </ul>
-            {% endif %}
-        {% endwith %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="main-content">
 
         {% block content %}{% endblock content %}
-        
+
     </div>
 
     {% include "footer.html" %}

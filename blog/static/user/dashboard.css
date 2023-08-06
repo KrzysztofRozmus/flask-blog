@@ -1,0 +1,128 @@
+.general {
+    background-color: steelblue;
+    height: 50rem;
+    width: 85rem;
+    display: block;
+    margin-top: 10rem;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.general li {
+    list-style: none;
+}
+
+.general a {
+    text-decoration: none;
+}
+
+.jeden {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.jeden h1 {
+    color: white;
+    font-size: 1.7rem;
+}
+
+.dwa {
+    display: flex;
+    height: 100%;
+    gap: 3rem;
+    height: 43.5rem;
+    border-radius: 8px;
+}
+
+.user-account {
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 2;
+    border-radius: 8px;
+    gap: 3rem;
+}
+
+.user-account h2 {
+    margin-top: 1rem;
+}
+
+.account-logo {
+    width: 10rem;
+    height: 10rem;
+    border: 1px solid black;
+}
+
+.user-main {
+    background-color: lightgray;
+    flex: 6;
+    border-radius: 8px;
+}
+
+.account-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.account-menu a {
+    font-size: 1.4rem;
+    color: black;
+}
+
+.account-menu a:hover {
+    color: orange;
+}
+
+
+@media (max-width: 1100px) {
+    .main-content {
+        height: 1600px;
+    }
+
+    .dwa {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .general {
+        height: 80rem;     
+        width: 45rem;   
+    }
+    .user-account {
+        width: 35rem;
+    }
+    .user-main {
+        width: 35rem;
+        min-height: 40rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .main-content {
+        height: 1600px;
+    }
+
+    .dwa {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .general {
+        height: 80rem;     
+        width: 27rem;   
+    }
+    .user-account {
+        width: 22rem;
+    }
+    .user-main {
+        width: 22rem;
+        min-height: 40rem;
+    }
+}

@@ -40,8 +40,13 @@ def login():
 
         if password:
             flash(f"Successfully logged in. Welcome {user.username} :)", "success")
-            return redirect(url_for("signup"))
+            return redirect(url_for("user_dashboard"))
 
         return redirect(url_for("login"))
 
     return render_template("auth/login.html", form=form)
+
+
+@app.route("/user_dashboard", methods=["GET", "POST"])
+def user_dashboard():
+    return render_template("user/dashboard.html")
