@@ -1,8 +1,8 @@
-from blog import app, db, login_manager
+from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
 from blog.models.user import User
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
 
@@ -29,7 +29,8 @@ def signup():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    password=generate_password_hash(form.password.data, "scrypt"))
+                    password=generate_password_hash(form.password.data, "scrypt"),
+                    date_joined=current_datetime)
 
         db.session.add(user)
         db.session.commit()
@@ -50,14 +51,11 @@ def login():
 
     elif form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
-        password = check_password_hash(user.password, form.password.data)
 
-        if password:
-            login_user(user, remember=True, duration=timedelta(minutes=1))
-            flash(f"Successfully logged in. Welcome {user.username} :)", "success")
-            return redirect(url_for("user_dashboard"))
+        login_user(user, remember=True, duration=timedelta(minutes=1))
 
-        return redirect(url_for("login"))
+        flash(f"Successfully logged in. Welcome {user.username} :)", "success")
+        return redirect(url_for("user_dashboard"))
 
     return render_template("auth/login.html", form=form)
 

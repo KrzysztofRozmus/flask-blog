@@ -61,6 +61,7 @@
     background-color: lightgray;
     flex: 6;
     border-radius: 8px;
+    display: flex;
 }
 
 .account-menu {
@@ -78,6 +79,26 @@
     color: orange;
 }
 
+.user-profile {
+    display: flex;
+    margin-top: 5.4rem;
+    margin-left: 5rem;
+    gap: 2rem
+}
+
+.user-profile-data,
+.user-profile-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.user-profile p,
+.user-profile h3 {
+    font-size: 1.5rem;
+
+}
+
 
 @media (max-width: 1100px) {
     .main-content {
@@ -91,12 +112,14 @@
     }
 
     .general {
-        height: 80rem;     
-        width: 45rem;   
+        height: 80rem;
+        width: 45rem;
     }
+
     .user-account {
         width: 35rem;
     }
+
     .user-main {
         width: 35rem;
         min-height: 40rem;
@@ -115,12 +138,14 @@
     }
 
     .general {
-        height: 80rem;     
-        width: 27rem;   
+        height: 80rem;
+        width: 27rem;
     }
+
     .user-account {
         width: 22rem;
     }
+
     .user-main {
         width: 22rem;
         min-height: 40rem;

@@ -3,8 +3,12 @@ import os
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from datetime import datetime
+    
 
 load_dotenv(".env")
+
+current_datetime = datetime.now().replace(microsecond=0)
 
 # App
 app = Flask(__name__)
