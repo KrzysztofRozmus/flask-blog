@@ -25,20 +25,31 @@
 
 
         <div class="user-main">
-            <form action="" class="update-user-form" , method="post">
+            <form action="" class="update-user-form" method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
 
-                {{ render_field(form.username.label, class="update-user-form-label") }}
+                <div class="user-change-credencials">
+                    {{ render_field(form.username.label, class="update-user-form-label") }}
 
-                {{ render_field(form.username, class="form-field", placeholder=current_user.username, minlength="3") }}
+                    {{ render_field(form.username, class="form-field", placeholder=current_user.username, minlength="3")
+                    }}
 
-                <div id="email-title-update">
-                    {{ render_field(form.email.label, class="update-user-form-label") }}
+                    <div id="email-title-update">
+                        {{ render_field(form.email.label, class="update-user-form-label") }}
+                    </div>
+
+                    {{ render_field(form.email, class="form-field", placeholder=current_user.email) }}
+
+                    {{ form.submit(class="update-user-button") }}
                 </div>
 
-                {{ render_field(form.email, class="form-field", placeholder=current_user.email) }}
+                <div class="user-change-logo">
+                    <p class="update-user-form-label">Change profile picture</p>
 
-                {{ form.submit(class="update-user-button") }}
+                    {{ render_field(logo_form.photo, class="form-field") }}
+
+                    {{ logo_form.submit_logo(class="update-user-button") }}
+                </div>
             </form>
         </div>
 

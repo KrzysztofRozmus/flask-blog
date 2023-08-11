@@ -1,10 +1,13 @@
 from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
-from blog.forms.auth import SignupForm, LoginForm, UserForm
+from blog.forms.auth import SignupForm, LoginForm
+from blog.forms.user import UserForm, LogoForm
 from blog.models.user import User
 from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
+from werkzeug.utils import secure_filename
+import os
 
 
 @login_manager.user_loader
@@ -80,9 +83,11 @@ def user_dashboard():
 @login_required
 def settings(id):
     form = UserForm()
+    logo_form = LogoForm()
+
     data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
 
-    if form.validate_on_submit():
+    if form.submit.data and form.validate():
 
         if form.username.data == "":
             pass
@@ -98,4 +103,15 @@ def settings(id):
         flash("Data changed successfully", "success")
         return redirect(url_for("user_dashboard"))
 
-    return render_template("user/settings.html", form=form, data_to_update=data_to_update)
+    elif logo_form.submit_logo.data and logo_form.validate():
+        if logo_form.photo.data == None:
+            pass
+        else:
+            f = logo_form.photo.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.instance_path, 'photos', filename))
+
+            flash("Logo changed successfully", "success")
+            return redirect(url_for("user_dashboard"))
+
+    return render_template("user/settings.html", form=form, logo_form=logo_form, data_to_update=data_to_update)

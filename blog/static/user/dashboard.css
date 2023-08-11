@@ -62,6 +62,7 @@
     flex: 6;
     border-radius: 8px;
     display: flex;
+    justify-content: center;
 }
 
 .account-menu {
@@ -98,14 +99,15 @@
     font-size: 1.5rem;
 }
 
-.update-user-form {
+/* .update-user-form {
     margin-top: 5.4rem;
     margin-left: 5rem;
-}
+} */
 
 .update-user-form {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .update-user-form-label {
@@ -135,6 +137,16 @@
     margin-top: 1.2rem;
 }
 
+.user-change-logo,
+.user-change-credencials {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5.5rem;
+}
+
+.user-change-logo p {
+    margin-bottom: 6.6rem;
+}
 
 
 
