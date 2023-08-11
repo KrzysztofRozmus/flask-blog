@@ -1,6 +1,6 @@
 from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
-from blog.forms.auth import SignupForm, LoginForm
+from blog.forms.auth import SignupForm, LoginForm, UserForm
 from blog.models.user import User
 from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -74,3 +74,28 @@ def logout():
 def user_dashboard():
 
     return render_template("user/dashboard.html")
+
+
+@app.route("/settings/<int:id>", methods=["GET", "POST"])
+@login_required
+def settings(id):
+    form = UserForm()
+    data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
+
+    if form.validate_on_submit():
+
+        if form.username.data == "":
+            pass
+        else:
+            data_to_update.username = form.username.data
+
+        if form.email.data == "":
+            pass
+        else:
+            data_to_update.email = form.email.data
+
+        db.session.commit()
+        flash("Data changed successfully", "success")
+        return redirect(url_for("user_dashboard"))
+
+    return render_template("user/settings.html", form=form, data_to_update=data_to_update)

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+
+<div class="general">
+
+    <div class="jeden">
+        <h1>User Dashboard</h1>
+    </div>
+
+    <div class="dwa">
+
+        <div class="user-account">
+            <h2>Account</h2>
+
+            <div class="account-logo"></div>
+
+            <ul class="account-menu">
+                <li><a href="{{ url_for('user_dashboard') }}">Profile</a></li>
+                <li><a href="{{ url_for('settings', id=current_user.id) }}">Settings</a></li>
+                <li><a href="">Search</a></li>
+            </ul>
+        </div>
+
+
+        <div class="user-main">
+            <form action="" class="update-user-form" , method="post">
+                {{ form.hidden_tag() }}
+
+                {{ render_field(form.username.label, class="update-user-form-label") }}
+
+                {{ render_field(form.username, class="form-field", placeholder=current_user.username, minlength="3") }}
+
+                <div id="email-title-update">
+                    {{ render_field(form.email.label, class="update-user-form-label") }}
+                </div>
+
+                {{ render_field(form.email, class="form-field", placeholder=current_user.email) }}
+
+                {{ form.submit(class="update-user-button") }}
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
