@@ -10,6 +10,7 @@ load_dotenv(".env")
 
 current_datetime = datetime.now().replace(microsecond=0)
 
+
 # App
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -26,5 +27,10 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
+
+# If the Profile pics folder does not exist, create it.
+profile_pics_folder = os.path.join(app.root_path, "static/profile_pics")
+if not os.path.exists(profile_pics_folder):
+    os.makedirs(profile_pics_folder)
 
 from blog import routes

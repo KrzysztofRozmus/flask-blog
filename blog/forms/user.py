@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, SubmitField
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import Length, ValidationError
 from blog.models.user import User
 from blog import db
@@ -33,6 +33,6 @@ class UserForm(FlaskForm):
 
 
 class LogoForm(FlaskForm):
-    photo = FileField()
+    picture = FileField(validators=[FileAllowed(["jpg", "png", "gif"])])
 
-    submit_logo = SubmitField("Update")
+    submit_pic = SubmitField("Update")
