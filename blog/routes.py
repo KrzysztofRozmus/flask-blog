@@ -7,13 +7,15 @@ from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
 from werkzeug.utils import secure_filename
+from secrets import token_hex
 import os
+# import hashlib
 from PIL import Image
 
 
 @login_manager.user_loader
 def load_user(id):
-    return User.query.get(id)
+    return db.session.get(User, int(id))
 
 
 @app.route("/")
@@ -105,15 +107,23 @@ def settings(id):
         flash("Data changed successfully", "success")
         return redirect(url_for("user_dashboard"))
 
-    # This code is used because of two forms on the same page. Validate_on_submit() function triggers both submit buttons.
     elif profile_pic_form.submit_pic.data and profile_pic_form.validate():
         if profile_pic_form.picture.data == None:
             pass
         else:
             pic_size = (128, 128)
-            file_name, file_extension = os.path.splitext(profile_pic_form.picture.data.filename)
 
-            picture_path = os.path.join(app.root_path, 'static/profile_pics', file_name+file_extension)
+            # The underscore character is used here to pass a variable that we will not use.
+            _, pic_file_extension = os.path.splitext(profile_pic_form.picture.data.filename)
+
+            file_name = token_hex(9)
+
+            # Uncomment and use hashlib library if needed
+            # file_name = hashlib.sha256().hexdigest()
+
+            pic_file_name = secure_filename(file_name+pic_file_extension)
+
+            picture_path = os.path.join(app.root_path, 'static/profile_pics', pic_file_name)
 
             with Image.open(profile_pic_form.picture.data) as i:
                 i.thumbnail(pic_size)
