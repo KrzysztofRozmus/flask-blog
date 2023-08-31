@@ -8,6 +8,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(163), nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False, default=current_datetime)
+    profile_pic = db.Column(db.String(40), nullable=False, default="default_pic.png")
 
     def __init__(self, username, email, password, date_joined):
         self.username = username

@@ -27,10 +27,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
-
-# If the Profile pics folder does not exist, create it.
-profile_pics_folder = os.path.join(app.root_path, "static/profile_pics")
-if not os.path.exists(profile_pics_folder):
-    os.makedirs(profile_pics_folder)
+app.config['UPLOAD_FOLDER'] = "blog/static/profile_pics"
 
 from blog import routes

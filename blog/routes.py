@@ -6,11 +6,8 @@ from blog.models.user import User
 from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
-from werkzeug.utils import secure_filename
-from secrets import token_hex
 import os
-# import hashlib
-from PIL import Image
+from blog.functions import save_profile_picture
 
 
 @login_manager.user_loader
@@ -79,7 +76,8 @@ def logout():
 @login_required
 def user_dashboard():
 
-    return render_template("user/dashboard.html")
+    pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
+    return render_template("user/dashboard.html", pic_file=pic_file)
 
 
 @app.route("/settings/<int:id>", methods=["GET", "POST"])
@@ -88,48 +86,46 @@ def settings(id):
     form = UserForm()
     profile_pic_form = LogoForm()
 
-    data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
+    pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
 
-    # This code is used because of two forms on the same page. Validate_on_submit() function triggers both submit buttons.
+    user_data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
+
+    # This code is used because of two forms on the same page. Validate_on_submit() function triggers both submit buttons at the same time.
     if form.submit.data and form.validate():
 
         if form.username.data == "":
             pass
         else:
-            data_to_update.username = form.username.data
+            user_data_to_update.username = form.username.data
 
         if form.email.data == "":
             pass
         else:
-            data_to_update.email = form.email.data
+            user_data_to_update.email = form.email.data
 
         db.session.commit()
+
         flash("Data changed successfully", "success")
         return redirect(url_for("user_dashboard"))
 
     elif profile_pic_form.submit_pic.data and profile_pic_form.validate():
+
         if profile_pic_form.picture.data == None:
             pass
         else:
-            pic_size = (128, 128)
+            profile_picture = save_profile_picture(profile_pic_form)
 
-            # The underscore character is used here to pass a variable that we will not use.
-            _, pic_file_extension = os.path.splitext(profile_pic_form.picture.data.filename)
+            # Remove previous unused profile pic from profile pics directory to save space.
+            if current_user.profile_pic == "default_pic.png":
+                pass
+            else:
+                profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
+                os.remove(profile_pic_path)
 
-            file_name = token_hex(9)
+            user_data_to_update.profile_pic = profile_picture
+            db.session.commit()
 
-            # Uncomment and use hashlib library if needed
-            # file_name = hashlib.sha256().hexdigest()
-
-            pic_file_name = secure_filename(file_name+pic_file_extension)
-
-            picture_path = os.path.join(app.root_path, 'static/profile_pics', pic_file_name)
-
-            with Image.open(profile_pic_form.picture.data) as i:
-                i.thumbnail(pic_size)
-                i.save(picture_path)
-
-            flash("Logo changed successfully", "success")
+            flash("Profile picture changed successfully", "success")
             return redirect(url_for("user_dashboard"))
 
-    return render_template("user/settings.html", form=form, profile_pic_form=profile_pic_form, data_to_update=data_to_update)
+    return render_template("user/settings.html", form=form, profile_pic_form=profile_pic_form, user_data_to_update=user_data_to_update, pic_file=pic_file)
