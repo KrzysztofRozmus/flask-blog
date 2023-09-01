@@ -10,6 +10,7 @@ import os
 from blog.functions import save_profile_picture
 
 
+
 @login_manager.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
@@ -29,10 +30,17 @@ def signup():
         return redirect(url_for("user_dashboard"))
 
     if form.validate_on_submit():
-        user = User(username=form.username.data,
-                    email=form.email.data,
-                    password=generate_password_hash(form.password.data, "scrypt"),
-                    date_joined=current_datetime)
+        if form.username.data == "Admin":
+            user = User(username=form.username.data,
+                        email=form.email.data,
+                        password=generate_password_hash(form.password.data, "scrypt"),
+                        date_joined=current_datetime,
+                        _is_admin=True)
+        else:
+            user = User(username=form.username.data,
+                        email=form.email.data,
+                        password=generate_password_hash(form.password.data, "scrypt"),
+                        date_joined=current_datetime)
 
         db.session.add(user)
         db.session.commit()
@@ -126,3 +134,7 @@ def settings(id):
             return redirect(url_for("user_dashboard"))
 
     return render_template("user/settings.html", form=form, profile_pic_form=profile_pic_form, user_data_to_update=user_data_to_update, pic_file=pic_file)
+
+
+
+
