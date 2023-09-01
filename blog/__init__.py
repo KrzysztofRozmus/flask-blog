@@ -1,15 +1,15 @@
 from flask import Flask
-import os
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from datetime import datetime
-    
+from flask_admin import Admin
+import os
+
 
 load_dotenv(".env")
 
 current_datetime = datetime.now().replace(microsecond=0)
-
 
 # App
 app = Flask(__name__)
@@ -28,5 +28,9 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
 app.config['UPLOAD_FOLDER'] = "blog/static/profile_pics"
+
+# Admin panel
+admin = Admin(app, name="Admin Panel", template_mode="bootstrap4")
+app.config['FLASK_ADMIN_SWATCH'] = "cerulean"
 
 from blog import routes

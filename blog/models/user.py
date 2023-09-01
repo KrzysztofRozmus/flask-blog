@@ -1,5 +1,6 @@
-from blog import db, current_datetime
+from blog import db, current_datetime, admin
 from flask_login import UserMixin
+from flask_admin.contrib.sqla import ModelView
 
 
 class User(db.Model, UserMixin):
@@ -18,3 +19,11 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.date_joined}')"
+
+
+class UserView(ModelView):
+    column_exclude_list = ["password", "profile_pic"]
+    form_excluded_columns = ["date_joined", "profile_pic"]
+
+
+admin.add_view(UserView(User, db.session))

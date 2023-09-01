@@ -17,7 +17,6 @@ def load_user(id):
 
 @app.route("/")
 def home():
-
     return render_template("base.html")
 
 
@@ -92,7 +91,6 @@ def settings(id):
 
     # This code is used because of two forms on the same page. Validate_on_submit() function triggers both submit buttons at the same time.
     if form.submit.data and form.validate():
-
         if form.username.data == "":
             pass
         else:
@@ -109,7 +107,6 @@ def settings(id):
         return redirect(url_for("user_dashboard"))
 
     elif profile_pic_form.submit_pic.data and profile_pic_form.validate():
-
         if profile_pic_form.picture.data == None:
             pass
         else:
