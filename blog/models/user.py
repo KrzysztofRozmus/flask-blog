@@ -1,5 +1,5 @@
 from blog import db, current_datetime, admin
-from flask import abort
+from flask import abort, flash, redirect, url_for
 from flask_login import current_user
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
@@ -55,6 +55,15 @@ class UserView(ModelView):
             return current_user.is_authenticated and current_user.username == "Admin" and current_user._is_admin == True
         else:
             return abort(403)
+
+    # This function does not allow to delete the Admin account.
+    def on_model_delete(self, model):
+        if model.username == "Admin":
+            flash("Admin account cannot be deleted", "danger")
+            
+            # user.details_view is one of the many endpoints that can be redirect to.
+            # "user" object came from models and it's added to Admin Panel.
+            abort(redirect(url_for("user.details_view")))
 
 
 admin.add_view(ModelView(Post, db.session))
