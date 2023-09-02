@@ -10,7 +10,6 @@ import os
 from blog.functions import save_profile_picture
 
 
-
 @login_manager.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
@@ -33,13 +32,13 @@ def signup():
         if form.username.data == "Admin":
             user = User(username=form.username.data,
                         email=form.email.data,
-                        password=generate_password_hash(form.password.data, "scrypt"),
+                        password=form.password.data,
                         date_joined=current_datetime,
                         _is_admin=True)
         else:
             user = User(username=form.username.data,
                         email=form.email.data,
-                        password=generate_password_hash(form.password.data, "scrypt"),
+                        password=form.password.data,
                         date_joined=current_datetime)
 
         db.session.add(user)
@@ -97,7 +96,8 @@ def settings(id):
 
     user_data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
 
-    # This code is used because of two forms on the same page. Validate_on_submit() function triggers both submit buttons at the same time.
+    # This if statement is used because of two forms on the same page.
+    # Validate_on_submit()function triggers both submit buttons at the same time.
     if form.submit.data and form.validate():
         if form.username.data == "":
             pass
@@ -120,7 +120,7 @@ def settings(id):
         else:
             profile_picture = save_profile_picture(profile_pic_form)
 
-            # Remove previous unused profile pic from profile pics directory to save space.
+            # Remove previous unused profile pic, from profile pics directory to save space.
             if current_user.profile_pic == "default_pic.png":
                 pass
             else:
@@ -133,8 +133,8 @@ def settings(id):
             flash("Profile picture changed successfully", "success")
             return redirect(url_for("user_dashboard"))
 
-    return render_template("user/settings.html", form=form, profile_pic_form=profile_pic_form, user_data_to_update=user_data_to_update, pic_file=pic_file)
-
-
-
-
+    return render_template("user/settings.html",
+                           form=form,
+                           profile_pic_form=profile_pic_form,
+                           user_data_to_update=user_data_to_update,
+                           pic_file=pic_file)

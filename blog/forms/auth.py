@@ -2,8 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from blog.models.user import User
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from blog import db
+from sqlalchemy import event
 
 
 class SignupForm(FlaskForm):
@@ -26,6 +27,15 @@ class SignupForm(FlaskForm):
                                      render_kw={"placeholder": "Confirm password"})
 
     submit = SubmitField("Create account")
+
+    # Password hash when user is created in Admin Panel.
+    # hash_user_password method from: https://stackoverflow.com/a/57100627/20072823
+    @event.listens_for(User.password, 'set', retval=True)
+    def hash_user_password(target, value, oldvalue, initiator):
+        if value != oldvalue:
+            # return bcrypt.generate_password_hash(value, 14).decode("utf-8")
+            return generate_password_hash(value, "scrypt")
+        return value
 
     def validate_username(self, username):
         user_username_in_db = db.session.execute(db.select(User).filter_by(username=username.data)).scalar()
