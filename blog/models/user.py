@@ -13,9 +13,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(163), nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False, default=current_datetime)
     profile_pic = db.Column(db.String(40), nullable=False, default="default_pic.png")
-    _is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    _is_admin = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, username, email, password, date_joined, _is_admin=None):
+    def __init__(self, username, email, password, date_joined, _is_admin=False):
         self.username = username
         self.email = email
         self.password = password
@@ -27,13 +27,13 @@ class User(db.Model, UserMixin):
 
 
 class UserView(ModelView):
-    # Enabling CSRF Protection.
+    # Enabling CSRF Protection
     form_base_class = SecureForm
 
     column_exclude_list = ["password", "profile_pic"]
     form_excluded_columns = ["date_joined", "profile_pic"]
 
-    # The user will be granted access to the Admin Panel only if 3 conditions are met.
+    # The user will be granted access to the Admin Panel only if 3 conditions below are met.
     def is_accessible(self):
         if current_user.is_authenticated and current_user.username == "Admin" and current_user._is_admin == True:
             return current_user.is_authenticated and current_user.username == "Admin" and current_user._is_admin == True

@@ -3,7 +3,6 @@ from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.user import UserForm, LogoForm
 from blog.models.user import User
-from werkzeug.security import generate_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
 import os
@@ -60,8 +59,11 @@ def login():
 
     elif form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
-
+        
         login_user(user, remember=True, duration=timedelta(minutes=1))
+
+        if current_user.username == "Admin" and current_user._is_admin == True:
+            return redirect(url_for("admin.index"))
 
         flash(f"Successfully logged in. Welcome {user.username} :)", "success")
         return redirect(url_for("user_dashboard"))
