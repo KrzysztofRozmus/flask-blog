@@ -59,7 +59,7 @@ def login():
 
     elif form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
-        
+
         login_user(user, remember=True, duration=timedelta(minutes=1))
 
         if current_user.username == "Admin" and current_user._is_admin == True:

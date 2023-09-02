@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(163), nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False, default=current_datetime)
     profile_pic = db.Column(db.String(40), nullable=False, default="default_pic.png")
-    _is_admin = db.Column(db.Boolean, nullable=False)
+    _is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, email, password, date_joined, _is_admin=False):
         self.username = username
@@ -26,10 +26,26 @@ class User(db.Model, UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.date_joined}', '{self._is_admin}')"
 
 
+class Post(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(120), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=current_datetime)
+    author = db.Column(db.String, nullable=False, default="Admin")
+
+    def __init__(self, title, content, author, date_posted=None):
+        self.title = title
+        self.content = content
+        self.author = author
+        self.date_posted = date_posted
+
+    def __repr__(self):
+        return f"User('{self.title}', '{self.content}', '{self.author}', '{self.date_posted}')"
+
+
 class UserView(ModelView):
     # Enabling CSRF Protection
     form_base_class = SecureForm
-
     column_exclude_list = ["password", "profile_pic"]
     form_excluded_columns = ["date_joined", "profile_pic"]
 
@@ -41,4 +57,5 @@ class UserView(ModelView):
             return abort(403)
 
 
+admin.add_view(ModelView(Post, db.session))
 admin.add_view(UserView(User, db.session))

@@ -11,16 +11,16 @@ load_dotenv(".env")
 
 current_datetime = datetime.now().replace(microsecond=0)
 
-# App
+# ========== App ==========
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
-# Database
+# ========== Database ==========
 db = SQLAlchemy()
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///user.db"
 db.init_app(app)
 
-# User authentication
+# ========== User authentication ==========
 login_manager = LoginManager()
 login_manager.init_app(app)
 # If user wants to access login_required page without being logged in, will be redirect to login page.
@@ -29,7 +29,7 @@ login_manager.login_message_category = "danger"
 
 app.config['UPLOAD_FOLDER'] = "blog/static/profile_pics"
 
-# Admin panel
+# ========== Admin Panel ==========
 admin = Admin(app, name="Admin Panel", template_mode="bootstrap4")
 app.config['FLASK_ADMIN_SWATCH'] = "cerulean"
 
