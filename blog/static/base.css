@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-    
+
 }
 
 body {
@@ -11,7 +11,7 @@ body {
     background-color: lightgray;
 }
 
-.main-content {    
+.main-content {
     min-height: 1100px;
     display: flex;
     flex-direction: column;
@@ -78,4 +78,71 @@ signup form after displaying an error under the box */
     right: 0.6rem;
     font-size: 2.2rem;
     cursor: pointer;
+}
+
+
+/* ================================ Posts ================================ */
+.home-page-posts-container {
+    display: flex;
+    gap: 10rem;
+    margin-top: 7rem;
+    width: 83%;
+    min-height: 100vh;
+}
+
+.home-page-posts-container a {
+    text-decoration: none;
+    color: black;
+}
+
+.home-page-posts-container a:hover {
+    color: steelblue;
+}
+
+.posts-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: steelblue;
+    padding: 1.5rem;
+    border-radius: 5px;
+}
+
+.advertisement-container {
+    border: 1px solid steelblue;
+    border-radius: 5px;
+    width: 100%;
+    height: 40rem;
+    flex: 1;
+}
+
+.post-box {
+    display: flex;
+    min-height: 135px;
+    border-radius: 5px;
+    background-color: lightgray;
+    gap: 0.1rem;
+}
+
+.img-div {
+    width: 170px;
+}
+
+.title-date-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.2rem;
+}
+
+.date-div {
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#post-title {
+    font-size: 1.5rem;
 }

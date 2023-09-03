@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='signup&login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='user/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='posts_page.css') }}">
 
     <title>Flask Blog</title>
 </head>
@@ -24,10 +25,10 @@
         {% if messages %}
             <ul>
                 {% for category, message in messages %}
-                    <li class="{{ category }}">
-                        <span class="flash-close-button" onclick="this.parentElement.style.display='none';">&times;</span>
-                        {{ message }}
-                    </li>
+                <li class="{{ category }}">
+                    <span class="flash-close-button" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ message }}
+                </li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -36,6 +37,38 @@
     <div class="main-content">
 
         {% block content %}{% endblock content %}
+
+        {% if home_page %}
+        <div class="home-page-posts-container">
+
+            <div class="posts-container">
+
+                {% for post in posts %}
+                <div class="post-box">
+                    
+                    <div class="img-div">
+                        <img src="" alt="">
+                    </div>
+
+                    <div class="title-date-div">
+                        <div class="title-div">
+                            <a href="" id="post-title">{{ post.title }}</a>
+                        </div>
+
+                        <div class="date-div">
+                            <p id="post-date">{{ post.date_posted.date() }}</p>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="advertisement-container"></div>
+
+        </div>
+        {% endif %}
 
     </div>
 

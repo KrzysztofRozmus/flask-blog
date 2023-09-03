@@ -2,7 +2,7 @@ from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.user import UserForm, LogoForm
-from blog.models.user import User
+from blog.models.user import User, Post
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
 import os
@@ -16,7 +16,11 @@ def load_user(id):
 
 @app.route("/")
 def home():
-    return render_template("base.html")
+    # Variable for displaying posts only on home page.
+    home_page = True
+
+    posts = db.session.execute(db.select(Post).order_by(Post.date_posted)).scalars()
+    return render_template("base.html", posts=posts, home_page=home_page)
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -140,3 +144,10 @@ def settings(id):
                            profile_pic_form=profile_pic_form,
                            user_data_to_update=user_data_to_update,
                            pic_file=pic_file)
+
+
+@app.route("/posts_page/<int:id>", methods=["GET", "POST"])
+def posts_page(id):
+    # posts = db.get_or_404(Post, id)
+    posts = Post.query.get_or_404(id)
+    return render_template("posts_page.html", posts=posts)
