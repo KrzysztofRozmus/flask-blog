@@ -104,7 +104,6 @@ signup form after displaying an error under the box */
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background-color: steelblue;
     padding: 1.5rem;
     border-radius: 5px;
 }
@@ -121,7 +120,7 @@ signup form after displaying an error under the box */
     display: flex;
     min-height: 135px;
     border-radius: 5px;
-    background-color: lightgray;
+    background-color: white;
     gap: 0.1rem;
 }
 

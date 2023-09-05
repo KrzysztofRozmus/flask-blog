@@ -12,6 +12,7 @@ flask-sqlalchemy = "*"
 flask-login = "*"
 pillow = "*"
 flask-admin = "*"
+flask-ckeditor = "*"
 
 [dev-packages]
 

@@ -4,6 +4,8 @@ from flask_login import current_user
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
+from wtforms import TextAreaField
+from wtforms.widgets import TextArea
 
 
 class User(db.Model, UserMixin):
@@ -60,11 +62,30 @@ class UserView(ModelView):
     def on_model_delete(self, model):
         if model.username == "Admin":
             flash("Admin account cannot be deleted", "danger")
-            
+
             # user.details_view is one of the many endpoints that can be redirect to.
             # "user" object came from models and it's added to Admin Panel.
             abort(redirect(url_for("user.details_view")))
 
 
-admin.add_view(ModelView(Post, db.session))
+class CKTextAreaWidget(TextArea):
+    def __call__(self, field, **kwargs):
+        if kwargs.get('class'):
+            kwargs['class'] += ' ckeditor'
+        else:
+            kwargs.setdefault('class', 'ckeditor')
+        return super(CKTextAreaWidget, self).__call__(field, **kwargs)
+
+
+class CKTextAreaField(TextAreaField):
+    widget = CKTextAreaWidget()
+
+
+class PostView(ModelView):
+    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
+    form_overrides = {"content": CKTextAreaField}
+    form_excluded_columns = ["author", "date_posted"]
+
+
 admin.add_view(UserView(User, db.session))
+admin.add_view(PostView(Post, db.session))
