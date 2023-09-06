@@ -52,7 +52,7 @@
 
                     <div class="title-date-div">
                         <div class="title-div">
-                            <a href="" id="post-title">{{ post.title }}</a>
+                            <a href="{{ url_for('posts_page', id=post.id) }}" id="post-title">{{ post.title }}</a>
                         </div>
 
                         <div class="date-div">

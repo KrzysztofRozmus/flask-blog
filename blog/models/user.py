@@ -85,6 +85,17 @@ class PostView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
     form_overrides = {"content": CKTextAreaField}
     form_excluded_columns = ["author", "date_posted"]
+
+    """
+    The lambda v, c, m, p: Markup(m.content) is a lambda function that is used as a formatter of the 'content' column.
+    It takes four arguments: 'v' (view formatter), 'c' (column formatter), 'm' (model instance) and 'p' (parameters).
+
+    This formatter is used to make the value in the 'content' column be interpreted as HTML and rendered by including
+    HTML tags in the response. To add the HTML tag to the header value, we use Markup, which is provided by Flask.
+
+    Markup(m.content) is used to return the contents of the 'content' column of the 'm' model as a Markup object,
+    which is automatically rendered as HTML by Flask.
+    """
     column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content)}
 
 

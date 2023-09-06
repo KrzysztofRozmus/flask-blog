@@ -148,6 +148,5 @@ def settings(id):
 
 @app.route("/posts_page/<int:id>", methods=["GET", "POST"])
 def posts_page(id):
-    # posts = db.get_or_404(Post, id)
-    posts = Post.query.get_or_404(id)
-    return render_template("posts_page.html", posts=posts)
+    post = db.get_or_404(Post, id)
+    return render_template("posts_page.html", post=post)

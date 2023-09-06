@@ -40,7 +40,7 @@ class SignupForm(FlaskForm):
     def validate_username(self, username):
         user_username_in_db = db.session.execute(db.select(User).filter_by(username=username.data)).scalar()
 
-        if user_username_in_db:
+        if user_username_in_db or username == "admin":
             raise ValidationError("That username is already taken.", "danger")
 
     def validate_email(self, email):

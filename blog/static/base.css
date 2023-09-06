@@ -140,6 +140,7 @@ signup form after displaying an error under the box */
     border-top: 1px solid black;
     display: flex;
     justify-content: flex-end;
+    font-style: italic;
 }
 
 #post-title {

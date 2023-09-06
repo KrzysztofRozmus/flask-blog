@@ -2,7 +2,18 @@
 
 {% block content %}
 
-    
-    
+<div class="post-page-div">
+
+    <h1>{{ post.title }}</h1>
+
+    <div class="post-page-date">
+        <p>{{ post.date_posted.date() }}</p>
+    </div>
+
+    <div class="post-page-content">
+        <p>{{ post.content | safe }}</p>
+    </div>
+
+</div>
 
 {% endblock content %}

@@ -1,0 +1,27 @@
+.post-page-div {
+    background-color: white;
+    width: 60%;
+    margin-top: 100px;
+    padding: 3rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5rem;
+}
+
+.post-page-div h1 {
+    margin-bottom: 3.5rem;
+    font-size: 1.9rem;
+}
+
+.post-page-date p {
+    margin-bottom: 1.5rem;
+    padding: 0.2rem 0 0.2rem 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    font-style: italic;
+}
+
+.post-page-content p {
+    font-size: 1.2rem;
+}
