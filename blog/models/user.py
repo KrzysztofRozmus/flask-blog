@@ -1,5 +1,5 @@
 from blog import db, current_datetime, admin
-from flask import abort, flash, redirect, url_for
+from flask import abort, flash, redirect, url_for, Markup
 from flask_login import current_user
 from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
@@ -85,6 +85,7 @@ class PostView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
     form_overrides = {"content": CKTextAreaField}
     form_excluded_columns = ["author", "date_posted"]
+    column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content)}
 
 
 admin.add_view(UserView(User, db.session))
