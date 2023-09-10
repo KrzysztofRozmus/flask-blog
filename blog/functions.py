@@ -6,11 +6,10 @@ import os
 from PIL import Image
 
 
-def save_profile_picture(profile_pic_form):
-    """ Save profile picture changed by user to database and static/profile_pic folder.
+def save_profile_picture(profile_pic_form) -> str:
+    """Save profile picture changed by user to database and static/profile_pic folder.
 
-        :param profile_pic_form: just type picture form without any methods after dot.
-    """
+    :param profile_pic_form: just type picture form without any methods after dot."""
 
     picture_size = (128, 128)
 
@@ -32,3 +31,13 @@ def save_profile_picture(profile_pic_form):
         i.save(picture_path)
 
     return secured_pic_file_name
+
+
+def name_and_save_post_picture(obj, post_pic_file) -> str:
+    """Function creates a random post image file name and saves it to a specified location"""
+
+    post_picture_file_random_name = token_hex(9)
+    _, post_picture_file_extension = os.path.splitext(post_pic_file.filename)
+    post_picture_file_name = secure_filename(post_picture_file_random_name + '%s' % post_picture_file_extension)
+
+    return post_picture_file_name

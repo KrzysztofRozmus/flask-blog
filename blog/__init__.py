@@ -10,12 +10,13 @@ from flask_ckeditor import CKEditor
 
 load_dotenv(".env")
 
-current_datetime = datetime.now().replace(microsecond=0)
-
 
 # ========== App ==========
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+current_datetime = datetime.now().replace(microsecond=0)
+app.config['UPLOAD_FOLDER'] = "blog/static/profile_pics"
+app.config['UPLOAD_FOLDER2'] = "blog/static/post_title_pics"
 
 
 # ========== Database ==========
@@ -30,8 +31,6 @@ login_manager.init_app(app)
 # If user wants to access login_required page without being logged in, will be redirect to login page.
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
-
-app.config['UPLOAD_FOLDER'] = "blog/static/profile_pics"
 
 
 # ========== Admin Panel ==========

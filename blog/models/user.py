@@ -1,4 +1,4 @@
-from blog import db, current_datetime, admin
+from blog import db, current_datetime, admin, app
 from flask import abort, flash, redirect, url_for, Markup
 from flask_login import current_user
 from flask_login import UserMixin
@@ -6,6 +6,9 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
+from flask_admin.form import ImageUploadField
+from blog.functions import name_and_save_post_picture
+from flask_wtf.file import FileAllowed
 
 
 class User(db.Model, UserMixin):
@@ -32,8 +35,9 @@ class Post(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=current_datetime)
     author = db.Column(db.String, nullable=False, default="Admin")
+    post_title_pic = db.Column(db.String(40), nullable=False, default="default_post_title_pic.png")
+    date_posted = db.Column(db.DateTime, nullable=False, default=current_datetime)
 
     def __init__(self, title, content, author, date_posted=None):
         self.title = title
@@ -48,6 +52,7 @@ class Post(db.Model, UserMixin):
 class UserView(ModelView):
     # Enabling CSRF Protection
     form_base_class = SecureForm
+    
     column_exclude_list = ["password", "profile_pic"]
     form_excluded_columns = ["date_joined", "profile_pic"]
 
@@ -58,7 +63,7 @@ class UserView(ModelView):
         else:
             return abort(403)
 
-    # This function does not allow to delete the Admin account.
+    # This method does not allow to delete the Admin account.
     def on_model_delete(self, model):
         if model.username == "Admin":
             flash("Admin account cannot be deleted", "danger")
@@ -84,19 +89,27 @@ class CKTextAreaField(TextAreaField):
 class PostView(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
     form_overrides = {"content": CKTextAreaField}
-    form_excluded_columns = ["author", "date_posted"]
 
-    """
-    The lambda v, c, m, p: Markup(m.content) is a lambda function that is used as a formatter of the 'content' column.
-    It takes four arguments: 'v' (view formatter), 'c' (column formatter), 'm' (model instance) and 'p' (parameters).
+    # Exclude columns from create post panel
+    form_excluded_columns = ["author", "date_posted", "post_title_pic"]
 
-    This formatter is used to make the value in the 'content' column be interpreted as HTML and rendered by including
-    HTML tags in the response. To add the HTML tag to the header value, we use Markup, which is provided by Flask.
+    # Exclude columns from list of posts panel
+    column_exclude_list = ["author", "post_title_pic"]
 
-    Markup(m.content) is used to return the contents of the 'content' column of the 'm' model as a Markup object,
-    which is automatically rendered as HTML by Flask.
-    """
+    form_extra_fields = {"post_title_picture": ImageUploadField(label="Post title picture",
+                                                                namegen=name_and_save_post_picture,
+                                                                validators=[FileAllowed(["jpg", "png", "gif"])],
+                                                                base_path=app.config['UPLOAD_FOLDER2'])}
+
+    # Display html text as Markup text on Admin Panel.
     column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content)}
+
+    def on_model_change(self, form, model, is_created):
+        """Method adds created post picture file name by name_and_save_post_picture function to database"""
+        post_pic_file_name = form.post_title_picture.data.filename
+        model.post_title_pic = post_pic_file_name
+
+        return super().on_model_change(form, model, is_created)
 
 
 admin.add_view(UserView(User, db.session))
