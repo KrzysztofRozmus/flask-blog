@@ -9,6 +9,7 @@ from wtforms.widgets import TextArea
 from flask_admin.form import ImageUploadField
 from blog.functions import name_and_save_post_picture
 from flask_wtf.file import FileAllowed
+from flask_admin.menu import MenuLink
 
 
 class User(db.Model, UserMixin):
@@ -52,7 +53,7 @@ class Post(db.Model, UserMixin):
 class UserView(ModelView):
     # Enabling CSRF Protection
     form_base_class = SecureForm
-    
+
     column_exclude_list = ["password", "profile_pic"]
     form_excluded_columns = ["date_joined", "profile_pic"]
 
@@ -97,9 +98,10 @@ class PostView(ModelView):
     column_exclude_list = ["author", "post_title_pic"]
 
     form_extra_fields = {"post_title_picture": ImageUploadField(label="Post title picture",
-                                                                namegen=name_and_save_post_picture,
                                                                 validators=[FileAllowed(["jpg", "png", "gif"])],
-                                                                base_path=app.config['UPLOAD_FOLDER2'])}
+                                                                base_path=app.config['UPLOAD_FOLDER2'],
+                                                                namegen=name_and_save_post_picture,
+                                                                max_size=(320, 240, True))}
 
     # Display html text as Markup text on Admin Panel.
     column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content)}
@@ -111,6 +113,9 @@ class PostView(ModelView):
 
         return super().on_model_change(form, model, is_created)
 
+
+# Method adds Logout link in Admin Panel for logout view
+admin.add_link(MenuLink(name='Logout', url='/logout'))
 
 admin.add_view(UserView(User, db.session))
 admin.add_view(PostView(Post, db.session))

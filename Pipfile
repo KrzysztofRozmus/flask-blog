@@ -10,9 +10,9 @@ flask-wtf = "*"
 email-validator = "*"
 flask-sqlalchemy = "*"
 flask-login = "*"
-pillow = "*"
 flask-admin = "*"
 flask-ckeditor = "*"
+pillow = "<=9.5.0-2"
 
 [dev-packages]
 

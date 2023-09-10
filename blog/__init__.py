@@ -28,6 +28,7 @@ db.init_app(app)
 # ========== User authentication ==========
 login_manager = LoginManager()
 login_manager.init_app(app)
+
 # If user wants to access login_required page without being logged in, will be redirect to login page.
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
