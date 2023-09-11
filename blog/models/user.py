@@ -57,21 +57,49 @@ class UserView(ModelView):
     column_exclude_list = ["password", "profile_pic"]
     form_excluded_columns = ["date_joined", "profile_pic"]
 
-    # The user will be granted access to the Admin Panel only if 3 conditions below are met.
     def is_accessible(self):
+        """The user will be granted access to the Admin Panel only if 3 conditions below are met"""
         if current_user.is_authenticated and current_user.username == "Admin" and current_user._is_admin == True:
             return current_user.is_authenticated and current_user.username == "Admin" and current_user._is_admin == True
         else:
             return abort(403)
 
-    # This method does not allow to delete the Admin account.
     def on_model_delete(self, model):
+        """This method does not allow to delete the Admin account"""
         if model.username == "Admin":
             flash("Admin account cannot be deleted", "danger")
-
+            
             # user.details_view is one of the many endpoints that can be redirect to.
             # "user" object came from models and it's added to Admin Panel.
             abort(redirect(url_for("user.details_view")))
+
+    def on_model_change(self, form, model, is_created):
+        """This method does not allow to change the Admin username.
+        Is in addition to the edit_form method"""
+
+        # Check that the user is edited, not created.
+        if not is_created:
+
+            # If "Admin" user is edited, block the change.
+            if "Admin" in form.username.data and model.username != "Admin":
+
+                flash("Admin username cannot be changed", "danger")
+                abort(redirect(url_for("user.edit_view")))
+
+        return super().on_model_change(form, model, is_created)
+
+    def edit_form(self, obj):
+        """This method disables editing of the Admin username field.
+        Is in addition to the on_model_change method."""
+
+        # Download the editing form.
+        form = super(UserView, self).edit_form(obj)
+
+        # Block editing of the username column.
+        if form.username.data == "Admin":
+            form.username.render_kw = {'readonly': True}
+
+        return form
 
 
 class CKTextAreaWidget(TextArea):
@@ -108,11 +136,15 @@ class PostView(ModelView):
 
     def on_model_change(self, form, model, is_created):
         """Method adds created post picture file name by name_and_save_post_picture function to database"""
-        post_pic_file_name = form.post_title_picture.data.filename
-        model.post_title_pic = post_pic_file_name
+        if form.post_title_picture.data:
+            post_pic_file_name = form.post_title_picture.data.filename
+            model.post_title_pic = post_pic_file_name
 
         return super().on_model_change(form, model, is_created)
 
+
+# Method adds Blog link in Admin Panel for home page of the blog
+admin.add_link(MenuLink(name='Blog', url='/'))
 
 # Method adds Logout link in Admin Panel for logout view
 admin.add_link(MenuLink(name='Logout', url='/logout'))
