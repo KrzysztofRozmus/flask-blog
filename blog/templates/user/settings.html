@@ -34,8 +34,7 @@
                 <div class="user-change-credencials">
                     {{ render_field(form.username.label, class="update-user-form-label") }}
 
-                    {{ render_field(form.username, class="form-field", placeholder=current_user.username, minlength="3")
-                    }}
+                    {{ render_field(form.username, class="form-field", placeholder=current_user.username, minlength="3")}}
 
                     <div id="email-title-update">
                         {{ render_field(form.email.label, class="update-user-form-label") }}
@@ -54,6 +53,7 @@
                     {{ profile_pic_form.submit_pic(class="update-user-button") }}
                 </div>
             </form>
+
 
         </div>
 

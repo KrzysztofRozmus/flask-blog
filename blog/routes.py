@@ -2,7 +2,8 @@ from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.user import UserForm, LogoForm
-from blog.models.user import User, Post
+from blog.models.user import User
+from blog.models.post import Post
 from flask_login import login_user, login_required, logout_user, current_user
 from datetime import timedelta
 import os

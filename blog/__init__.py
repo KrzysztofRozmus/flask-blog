@@ -43,5 +43,4 @@ app.config['FLASK_ADMIN_SWATCH'] = "cerulean"
 ckeditor = CKEditor(app)
 
 
-
 from blog import routes
