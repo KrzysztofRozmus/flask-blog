@@ -4,7 +4,7 @@ from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.user import UserForm, LogoForm, ChangePasswordForm
 from blog.models.user import User
 from blog.models.post import Post
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, fresh_login_required, login_fresh, current_user
 from datetime import timedelta
 import os
 from blog.functions import save_profile_picture
@@ -58,11 +58,11 @@ def signup():
 def login():
     form = LoginForm()
 
-    if current_user.is_authenticated and current_user.is_active:
+    if login_fresh():
         flash("You are logged in already", "info")
         return redirect(url_for("user_dashboard"))
 
-    elif form.validate_on_submit():
+    if form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
 
         login_user(user, remember=True, duration=timedelta(minutes=1))
@@ -94,7 +94,7 @@ def user_dashboard():
 
 
 @app.route("/settings/<int:id>", methods=["GET", "POST"])
-@login_required
+@fresh_login_required
 def settings(id):
     form = UserForm()
     profile_pic_form = LogoForm()
@@ -144,8 +144,11 @@ def settings(id):
             flash("Profile picture changed successfully", "success")
             return redirect(url_for("user_dashboard"))
 
-    elif change_user_password.submit.data and form.validate():
-        pass
+    elif change_user_password.submit_password.data and change_user_password.validate():
+        user_data_to_update.password = change_user_password.password.data
+        db.session.commit()
+        flash("Password has been successfully changed", "success")
+        return redirect(url_for("user_dashboard"))
 
     return render_template("user/settings.html",
                            form=form,

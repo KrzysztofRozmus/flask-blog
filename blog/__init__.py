@@ -33,6 +33,11 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
+# If a user wants to access user account settings, re-authentication is required unless the login is fresh.
+login_manager.refresh_view = "login"
+login_manager.needs_refresh_message = "You need to reauthenticate to access this page"
+login_manager.needs_refresh_message_category = "info"
+
 
 # ========== Admin Panel ==========
 admin = Admin(app, name="Admin Panel", template_mode="bootstrap4")

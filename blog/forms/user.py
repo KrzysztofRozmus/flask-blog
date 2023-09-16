@@ -40,17 +40,17 @@ class LogoForm(FlaskForm):
 
 class ChangePasswordForm(FlaskForm):
 
-    password = PasswordField(validators=[DataRequired()])
-    
-    confirm_password = PasswordField(validators=[DataRequired(),
-                                                 Length(min=3, max=60),
-                                                 EqualTo("password", "Field must be equal to Password.")])
+    password = PasswordField("New password", validators=[DataRequired()])
 
-    submit = SubmitField("Update")
+    confirm_password = PasswordField("Confirm new password", validators=[DataRequired(),
+                                                                         Length(min=3, max=60),
+                                                                         EqualTo("password", "Field must be equal to Password.")])
+
+    submit_password = SubmitField("Update")
 
     def validate_password(self, password):
         try:
-            user_in_db = db.session.execute(db.select(User).filter_by(email=self.user_email_in_db.email)).scalar()
+            user_in_db = db.session.execute(db.select(User).filter_by(id=self.current_user.id)).scalar()
             user_password = check_password_hash(user_in_db.password, password.data)
 
             if not user_password:
