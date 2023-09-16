@@ -79,7 +79,7 @@
 
             <div class="user-delete-account">
                 <p class="update-user-form-label">Delete account</p>
-                <a class="update-user-button" id="delete-account-button" href="">Delete</a>
+                <a class="update-user-button" id="delete-account-button" href="{{ url_for('delete_account', id=current_user.id) }}">Delete</a>
             </div>
 
 

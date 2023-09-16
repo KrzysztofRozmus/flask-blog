@@ -142,13 +142,13 @@ def settings(id):
             db.session.commit()
 
             flash("Profile picture changed successfully", "success")
-            return redirect(url_for("user_dashboard"))
+            return redirect(url_for("settings", id=id))
 
     elif change_user_password.submit_password.data and change_user_password.validate():
         user_data_to_update.password = change_user_password.password.data
         db.session.commit()
         flash("Password has been successfully changed", "success")
-        return redirect(url_for("user_dashboard"))
+        return redirect(url_for("settings", id=id))
 
     return render_template("user/settings.html",
                            form=form,
@@ -158,7 +158,33 @@ def settings(id):
                            change_user_password=change_user_password)
 
 
-@app.route("/posts_page/<int:id>", methods=["GET", "POST"])
+@app.route("/posts_page/<int:id>", methods=["GET"])
 def posts_page(id):
     post = db.get_or_404(Post, id)
     return render_template("posts_page.html", post=post)
+
+
+@app.route("/delete_account/<int:id>", methods=["GET"])
+def delete_account(id):
+
+    if current_user.id == id:
+        user_to_delete = db.get_or_404(User, id)
+        db.session.delete(user_to_delete)
+
+        db.session.commit()
+
+        # Delete user profile pic after deleting an account to save space.
+        try:
+            profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
+            os.remove(profile_pic_path)
+        except FileNotFoundError:
+            pass
+
+        # logout_user prevents flash messages from being displayed when redirected to the login page.
+        logout_user()
+
+        flash("The account has been deleted", "success")
+        return redirect(url_for("login"))
+
+    flash("You don't have permission to this action", "danger")
+    return redirect(url_for("settings", id=id))
