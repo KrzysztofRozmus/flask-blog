@@ -1,7 +1,7 @@
 from blog import app, db, login_manager, current_datetime
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
-from blog.forms.user import UserForm, LogoForm
+from blog.forms.user import UserForm, LogoForm, ChangePasswordForm
 from blog.models.user import User
 from blog.models.post import Post
 from flask_login import login_user, login_required, logout_user, current_user
@@ -98,6 +98,7 @@ def user_dashboard():
 def settings(id):
     form = UserForm()
     profile_pic_form = LogoForm()
+    change_user_password = ChangePasswordForm()
 
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
 
@@ -131,8 +132,11 @@ def settings(id):
             if current_user.profile_pic == "default_pic.png":
                 pass
             else:
-                profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
-                os.remove(profile_pic_path)
+                try:
+                    profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
+                    os.remove(profile_pic_path)
+                except FileNotFoundError:
+                    pass
 
             user_data_to_update.profile_pic = profile_picture
             db.session.commit()
@@ -140,11 +144,15 @@ def settings(id):
             flash("Profile picture changed successfully", "success")
             return redirect(url_for("user_dashboard"))
 
+    elif change_user_password.submit.data and form.validate():
+        pass
+
     return render_template("user/settings.html",
                            form=form,
                            profile_pic_form=profile_pic_form,
                            user_data_to_update=user_data_to_update,
-                           pic_file=pic_file)
+                           pic_file=pic_file,
+                           change_user_password=change_user_password)
 
 
 @app.route("/posts_page/<int:id>", methods=["GET", "POST"])

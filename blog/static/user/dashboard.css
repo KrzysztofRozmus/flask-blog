@@ -1,10 +1,10 @@
 .general {
     background-color: steelblue;
-    height: 50rem;
+    height: 54rem;
     width: 85rem;
     display: block;
     margin-top: 10rem;
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 0.5rem 1.5rem 1.5rem 1.5rem;
 }
 
@@ -16,7 +16,7 @@
     text-decoration: none;
 }
 
-.jeden {
+.user-dashboard-title {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,16 +24,15 @@
     margin-bottom: 2rem;
 }
 
-.jeden h1 {
+.user-dashboard-title h1 {
     color: white;
     font-size: 1.7rem;
 }
 
 .dwa {
     display: flex;
-    height: 100%;
     gap: 3rem;
-    height: 43.5rem;
+    height: 90%;
     border-radius: 8px;
 }
 
@@ -68,12 +67,28 @@
     object-fit: cover;
 }
 
+
 .user-main {
+    background-color: steelblue;
+    gap: 0.9rem;
+}
+
+.user-main-profile {
     background-color: lightgray;
+}
+
+.user-main,
+.user-main-profile {
     flex: 6;
     border-radius: 8px;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.user-main p {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .account-menu {
@@ -81,6 +96,7 @@
     flex-direction: column;
     gap: 2rem;
 }
+
 
 .account-menu a {
     font-size: 1.4rem;
@@ -98,6 +114,10 @@
     gap: 2rem
 }
 
+.user-data-labels {
+    font-size: 1.2rem;
+}
+
 .user-profile-data,
 .user-profile-labels {
     display: flex;
@@ -110,20 +130,33 @@
     font-size: 1.5rem;
 }
 
-/* .update-user-form {
-    margin-top: 5.4rem;
-    margin-left: 5rem;
-} */
-
-.update-user-form {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-}
-
 .update-user-form-label {
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.user-change-logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-delete-account {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.user-change-credentials,
+.user-change-password,
+.user-change-logo,
+.user-delete-account {
+    padding: 1.2rem 3.8rem;
+    height: 100%;
+    background-color: lightgray;
+    border-radius: 5px;
+
 }
 
 .update-user-button {
@@ -133,7 +166,16 @@
     color: black;
     font-size: 18px;
     background-image: linear-gradient(45deg, steelblue, lightskyblue);
-    margin-top: 2rem;
+    margin-top: 2.6rem;
+    width: 100%;
+}
+
+#delete-account-button {
+    background-image: linear-gradient(45deg, red, orange);
+}
+
+.email-and-confirmpassword {
+    margin-top: 1rem;
 }
 
 .update-user-button:active {
@@ -144,25 +186,13 @@
     cursor: pointer;
 }
 
-#email-title-update {
-    margin-top: 1.2rem;
-}
 
-.user-change-logo,
-.user-change-credencials {
-    display: flex;
-    flex-direction: column;
-    margin-top: 5.5rem;
-}
 
-.user-change-logo p {
-    margin-bottom: 6.6rem;
-}
-
+/* ================================ Portable devices ================================ */
 
 @media (max-width: 1100px) {
     .main-content {
-        height: 1600px;
+        min-height: 2400px;
     }
 
     .dwa {
@@ -171,8 +201,18 @@
         align-items: center;
     }
 
+    .user-change-credentials,
+    .user-change-password,
+    .user-change-logo,
+    .user-delete-account {
+        flex: 1;
+        height: 25rem;
+        padding: 1.2rem 1.5rem;
+
+    }
+
     .general {
-        height: 80rem;
+        min-height: 135rem;
         width: 45rem;
     }
 
@@ -183,7 +223,11 @@
     .user-main {
         width: 35rem;
         min-height: 40rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
     }
+
 }
 
 @media (max-width: 800px) {
@@ -195,6 +239,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .user-change-credentials,
+    .user-change-password,
+    .user-change-logo,
+    .user-delete-account {
+        flex: 1;
+        height: 25rem;
+        padding: 1.2rem 2.2rem;
     }
 
     .general {
