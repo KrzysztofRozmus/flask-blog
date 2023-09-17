@@ -13,6 +13,7 @@ flask-login = "*"
 flask-admin = "*"
 flask-ckeditor = "*"
 pillow = "<=9.5.0-2"
+flask-mail = "*"
 
 [dev-packages]
 

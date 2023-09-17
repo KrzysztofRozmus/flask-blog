@@ -6,6 +6,7 @@ from datetime import datetime
 from flask_admin import Admin
 import os
 from flask_ckeditor import CKEditor
+from flask_mail import Mail
 
 
 load_dotenv(".env")
@@ -46,6 +47,15 @@ app.config['FLASK_ADMIN_SWATCH'] = "cerulean"
 
 # ========== CKEditor ==========
 ckeditor = CKEditor(app)
+
+
+# ========== Mail ==========
+app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
+app.config["MAIL_PORT"] = os.getenv("MAIL_PORT")
+app.config["MAIL_USE_SSL"] = os.getenv("MAIL_USE_SSL")
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+mail = Mail(app)
 
 
 from blog import routes

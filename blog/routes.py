@@ -1,13 +1,14 @@
-from blog import app, db, login_manager, current_datetime
+from blog import app, db, login_manager, current_datetime, mail
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
-from blog.forms.user import UserForm, LogoForm, ChangePasswordForm
+from blog.forms.user import UserForm, LogoForm, ChangePasswordButton
 from blog.models.user import User
 from blog.models.post import Post
 from flask_login import login_user, login_required, logout_user, fresh_login_required, login_fresh, current_user
 from datetime import timedelta
 import os
 from blog.functions import save_profile_picture
+from flask_mail import Message
 
 
 @login_manager.user_loader
@@ -98,7 +99,8 @@ def user_dashboard():
 def settings(id):
     form = UserForm()
     profile_pic_form = LogoForm()
-    change_user_password = ChangePasswordForm()
+    # change_user_password = ChangePasswordForm()
+    button_form = ChangePasswordButton()
 
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
 
@@ -144,18 +146,33 @@ def settings(id):
             flash("Profile picture changed successfully", "success")
             return redirect(url_for("settings", id=id))
 
-    elif change_user_password.submit_password.data and change_user_password.validate():
-        user_data_to_update.password = change_user_password.password.data
-        db.session.commit()
-        flash("Password has been successfully changed", "success")
-        return redirect(url_for("settings", id=id))
+    elif button_form.submit_button.data and button_form.validate():
+        msg = Message("Verify Your Email",
+                      sender=app.config["MAIL_USERNAME"],
+                      recipients=[current_user.email])
+        msg.body = "This testing email is to verify your email address."
+
+        try:
+            mail.send(msg)
+            flash(f"Email was sent successfully.", "success")
+            return redirect(url_for("home"))
+
+        except Exception:
+            flash("Email was not sent, try again.", "danger")
+            return redirect(url_for("user_dashboard"))
+
+    # elif change_user_password.submit_password.data and change_user_password.validate():
+    #     user_data_to_update.password = change_user_password.password.data
+    #     db.session.commit()
+    #     flash("Password has been successfully changed", "success")
+    #     return redirect(url_for("settings", id=id))
 
     return render_template("user/settings.html",
                            form=form,
                            profile_pic_form=profile_pic_form,
                            user_data_to_update=user_data_to_update,
                            pic_file=pic_file,
-                           change_user_password=change_user_password)
+                           button_form=button_form)
 
 
 @app.route("/posts_page/<int:id>", methods=["GET"])

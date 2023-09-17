@@ -34,17 +34,23 @@
                 <div class="user-change-credentials">
                     <p class="update-user-form-label">Change user data</p>
 
-                    {{ render_field(form.username.label, class="user-data-labels") }}
-                    {{ render_field(form.username, class="form-field", placeholder=current_user.username,
-                    minlength="3")}}
-
                     <div class="email-and-confirmpassword">
-                        {{ render_field(form.email.label, class="user-data-labels") }}
-                        {{ render_field(form.email, class="form-field", placeholder=current_user.email) }}
+                        {{ render_field(form.username.label, class="user-data-labels") }}
+                        {{ render_field(form.username, class="form-field-user-settings",
+                        placeholder=current_user.username,
+                        minlength="3")}}
+
+                        <div class="huj">
+                            {{ render_field(form.email.label, class="user-data-labels") }}
+                            {{ render_field(form.email, class="form-field-user-settings",
+                            placeholder=current_user.email) }}
+                        </div>
                     </div>
+
                     {{ form.submit(class="update-user-button") }}
                 </div>
             </form>
+
 
             <form action="" method="POST">
                 {{ form.hidden_tag() }}
@@ -52,17 +58,11 @@
                 <div class="user-change-password">
                     <p class="update-user-form-label">Change password</p>
 
-                    {{ render_field(change_user_password.password.label, class="user-data-labels") }}
-                    {{ render_field(change_user_password.password, class="form-field") }}
-
-                    <div class="email-and-confirmpassword">
-                        {{ render_field(change_user_password.confirm_password.label, class="user-data-labels") }}
-                        {{ render_field(change_user_password.confirm_password, class="form-field") }}
-                    </div>
-
-                    {{ change_user_password.submit_password(class="update-user-button") }}
+                    {{ button_form.submit_button(class="update-user-button") }}
                 </div>
             </form>
+
+
 
             <form action="" method="POST" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
@@ -70,16 +70,16 @@
                 <div class="user-change-logo">
                     <p class="update-user-form-label">Change profile picture</p>
 
-                    <div>
-                        {{ render_field(profile_pic_form.picture, class="form-field") }}
-                        {{ profile_pic_form.submit_pic(class="update-user-button") }}
-                    </div>
+                    {{ render_field(profile_pic_form.picture, class="form-field-user-settings") }}
+                    {{ profile_pic_form.submit_pic(class="update-user-button") }}
+
                 </div>
             </form>
 
             <div class="user-delete-account">
                 <p class="update-user-form-label">Delete account</p>
-                <a class="update-user-button" id="delete-account-button" href="{{ url_for('delete_account', id=current_user.id) }}">Delete</a>
+                <a class="update-user-button" id="delete-account-button"
+                    href="{{ url_for('delete_account', id=current_user.id) }}">Delete</a>
             </div>
 
 

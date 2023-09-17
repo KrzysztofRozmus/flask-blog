@@ -88,13 +88,24 @@
 
 .user-main p {
     text-align: center;
-    margin-bottom: 2rem;
+}
+
+.form-field-user-settings {
+    width: 100%;
+    font-size: 17px;
+    padding: 6px;
 }
 
 .account-menu {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.form-box-error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center
 }
 
 
@@ -118,6 +129,10 @@
     font-size: 1.2rem;
 }
 
+.huj {
+    margin-top: 1rem;
+}
+
 .user-profile-data,
 .user-profile-labels {
     display: flex;
@@ -135,17 +150,8 @@
     font-weight: 600;
 }
 
-.user-change-logo {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
 .user-delete-account {
-    display: flex;
-    flex-direction: column;
     text-align: center;
-    justify-content: space-between;
 }
 
 .user-change-credentials,
@@ -156,7 +162,9 @@
     height: 100%;
     background-color: lightgray;
     border-radius: 5px;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .update-user-button {
@@ -166,16 +174,11 @@
     color: black;
     font-size: 18px;
     background-image: linear-gradient(45deg, steelblue, lightskyblue);
-    margin-top: 2.6rem;
     width: 100%;
 }
 
 #delete-account-button {
     background-image: linear-gradient(45deg, red, orange);
-}
-
-.email-and-confirmpassword {
-    margin-top: 1rem;
 }
 
 .update-user-button:active {

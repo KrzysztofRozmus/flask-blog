@@ -30,24 +30,25 @@
 
             {% if current_user.is_authenticated %}
 
-                <div class="user-profile">
-                    <div class="user-profile-labels">
-                        <h3>Username:</h3>
-                        <h3>Email:</h3>
-                        <h3>Date joined:</h3>
-                    </div>
-
-                    <div class="user-profile-data">
-                        <p>{{ current_user.username }}</p>
-                        <p>{{ current_user.email }}</p>
-                        <p>{{ current_user.date_joined }}</p>
-                    </div>
+            <div class="user-profile">
+                <div class="user-profile-labels">
+                    <h3>Username:</h3>
+                    <h3>Email:</h3>
+                    <h3>Date joined:</h3>
                 </div>
+
+                <div class="user-profile-data">
+                    <p>{{ current_user.username }}</p>
+                    <p>{{ current_user.email }}</p>
+                    <p>{{ current_user.date_joined }}</p>
+                </div>
+                
+            </div>
 
             {% endif %}
 
         </div>
-        
+
     </div>
 </div>
 

@@ -9,12 +9,12 @@ from sqlalchemy import event
 
 class SignupForm(FlaskForm):
     username = StringField(validators=[DataRequired(),
-                                       Length(min=3, max=30)],
+                                       Length(min=3, max=50)],
                            render_kw={"placeholder": "Username"})
 
     email = EmailField(validators=[DataRequired(),
                                    Email(),
-                                   Length(min=9, max=30)],
+                                   Length(min=9, max=50)],
                        render_kw={"placeholder": "Email"})
 
     password = PasswordField(validators=[DataRequired(),
