@@ -1,4 +1,5 @@
 from blog import app
+from flask_login import current_user
 from werkzeug.utils import secure_filename
 from secrets import token_hex
 import os
@@ -41,3 +42,9 @@ def name_and_save_post_picture(obj, post_pic_file) -> str:
     post_picture_file_name = secure_filename(post_picture_file_random_name + '%s' % post_picture_file_extension)
 
     return post_picture_file_name
+
+
+def delete_profile_picture(profile_pic_folder) -> None:
+    profile_pic_path = os.path.join(profile_pic_folder, current_user.profile_pic)
+    
+    return os.remove(profile_pic_path)

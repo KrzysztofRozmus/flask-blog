@@ -5,14 +5,12 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms.validators import Length, ValidationError, DataRequired, EqualTo
 from blog.models.user import User
 from blog import db
-from werkzeug.security import check_password_hash
 
 
+# ============================= UserForm ==============================
 class UserForm(FlaskForm):
     username = StringField(validators=[Length(max=50)])
-
     email = EmailField(validators=[Length(max=50)])
-
     submit = SubmitField("Update")
 
     def validate_username(self, username):
@@ -32,34 +30,23 @@ class UserForm(FlaskForm):
             raise ValidationError("This is your current email.", "danger")
 
 
-class LogoForm(FlaskForm):
+# ============================= ProfilePicForm ==============================
+class ProfilePicForm(FlaskForm):
     picture = FileField(validators=[FileAllowed(["jpg", "png", "gif"])])
-
     submit_pic = SubmitField("Update")
 
 
+# ============================= ChangePasswordButton ==============================
 class ChangePasswordButton(FlaskForm):
     submit_button = SubmitField("Send Link")
 
 
-# class ChangePasswordForm(FlaskForm):
-
-#     password = PasswordField("New password", validators=[DataRequired()])
-
-#     confirm_password = PasswordField("Confirm new password", validators=[DataRequired(),
-#                                                                          Length(min=3, max=60),
-#                                                                          EqualTo("password", "Field must be equal to Password.")])
-
-#     submit_password = SubmitField("Update")
-
-#     def validate_password(self, password):
-#         try:
-#             user_in_db = db.session.execute(db.select(User).filter_by(id=self.current_user.id)).scalar()
-#             user_password = check_password_hash(user_in_db.password, password.data)
-
-#             if not user_password:
-#                 raise ValidationError("Invalid password.", "danger")
-
-#         # Handle this error if self.user_email_in_db.email is NoneType. It occurs if user put invalid email.
-#         except AttributeError:
-#             pass
+# ============================= ChangePasswordForm ==============================
+class ChangePasswordForm(FlaskForm):
+    new_password = PasswordField("New password", validators=[DataRequired(), Length(min=3,)],
+                                 render_kw={"placeholder": "New password"})
+    confirm_new_password = PasswordField("Confirm new password", validators=[DataRequired(),
+                                                                             Length(min=3, max=60),
+                                                                             EqualTo("new_password", "Field must be equal to New password.")],
+                                         render_kw={"placeholder": "Confirm new password"})
+    submit_password = SubmitField("Update")

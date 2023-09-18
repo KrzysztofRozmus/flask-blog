@@ -7,6 +7,7 @@ from flask_admin import Admin
 import os
 from flask_ckeditor import CKEditor
 from flask_mail import Mail
+from itsdangerous.url_safe import URLSafeTimedSerializer
 
 
 load_dotenv(".env")
@@ -49,13 +50,17 @@ app.config['FLASK_ADMIN_SWATCH'] = "cerulean"
 ckeditor = CKEditor(app)
 
 
-# ========== Mail ==========
+# ========== Email ==========
 app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER")
 app.config["MAIL_PORT"] = os.getenv("MAIL_PORT")
 app.config["MAIL_USE_SSL"] = os.getenv("MAIL_USE_SSL")
 app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
 mail = Mail(app)
+
+
+# ========== URL Serializer ==========
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 
 from blog import routes

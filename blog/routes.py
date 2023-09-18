@@ -1,21 +1,24 @@
-from blog import app, db, login_manager, current_datetime, mail
+from blog import app, db, login_manager, current_datetime, mail, serializer
+from flask_login import (login_user, login_required, logout_user,
+                         fresh_login_required, login_fresh, current_user)
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
-from blog.forms.user import UserForm, LogoForm, ChangePasswordButton
+from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm
 from blog.models.user import User
 from blog.models.post import Post
-from flask_login import login_user, login_required, logout_user, fresh_login_required, login_fresh, current_user
 from datetime import timedelta
-import os
-from blog.functions import save_profile_picture
+from blog.functions import save_profile_picture, delete_profile_picture
 from flask_mail import Message
+import os
 
 
+# ============================= load_user ==============================
 @login_manager.user_loader
 def load_user(id):
     return db.session.get(User, int(id))
 
 
+# ============================= home ==============================
 @app.route("/")
 def home():
     # Variable for displaying posts only on home page.
@@ -25,6 +28,7 @@ def home():
     return render_template("base.html", posts=posts, home_page=home_page)
 
 
+# ============================= signup ==============================
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     form = SignupForm()
@@ -55,6 +59,7 @@ def signup():
     return render_template("auth/signup.html", form=form)
 
 
+# ============================= login ==============================
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
@@ -77,6 +82,7 @@ def login():
     return render_template("auth/login.html", form=form)
 
 
+# ============================= logout ==============================
 @app.route("/logout")
 @login_required
 def logout():
@@ -86,6 +92,7 @@ def logout():
     return redirect(url_for("login"))
 
 
+# ============================= user_dashboard ==============================
 @app.route("/user_dashboard", methods=["GET", "POST"])
 @login_required
 def user_dashboard():
@@ -94,17 +101,17 @@ def user_dashboard():
     return render_template("user/dashboard.html", pic_file=pic_file)
 
 
+# ============================= settings ==============================
 @app.route("/settings/<int:id>", methods=["GET", "POST"])
 @fresh_login_required
 def settings(id):
     form = UserForm()
-    profile_pic_form = LogoForm()
-    # change_user_password = ChangePasswordForm()
+    profile_pic_form = ProfilePicForm()
     button_form = ChangePasswordButton()
 
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
 
-    user_data_to_update = db.session.execute(db.select(User).filter_by(id=id)).scalar()
+    user = db.session.execute(db.select(User).filter_by(id=id)).scalar()
 
     # This if statement is used because of two forms on the same page.
     # Validate_on_submit()function triggers both submit buttons at the same time.
@@ -112,12 +119,12 @@ def settings(id):
         if form.username.data == "":
             pass
         else:
-            user_data_to_update.username = form.username.data
+            user.username = form.username.data
 
         if form.email.data == "":
             pass
         else:
-            user_data_to_update.email = form.email.data
+            user.email = form.email.data
 
         db.session.commit()
 
@@ -135,73 +142,92 @@ def settings(id):
                 pass
             else:
                 try:
-                    profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
-                    os.remove(profile_pic_path)
+                    delete_profile_picture(app.config['UPLOAD_FOLDER'])
                 except FileNotFoundError:
                     pass
 
-            user_data_to_update.profile_pic = profile_picture
+            user.profile_pic = profile_picture
             db.session.commit()
 
             flash("Profile picture changed successfully", "success")
             return redirect(url_for("settings", id=id))
 
     elif button_form.submit_button.data and button_form.validate():
-        msg = Message("Verify Your Email",
-                      sender=app.config["MAIL_USERNAME"],
-                      recipients=[current_user.email])
-        msg.body = "This testing email is to verify your email address."
+        msg = Message(subject="Change your password",
+                      recipients=[current_user.email],
+                      sender=app.config["MAIL_USERNAME"])
+
+        token = serializer.dumps(user.email)
+
+        link = url_for("change_user_password", token=token, _external=True)
+
+        msg.body = f"Click to change password: {link}"
 
         try:
             mail.send(msg)
-            flash(f"Email was sent successfully.", "success")
-            return redirect(url_for("home"))
+            flash(f"Email was sent successfully. Check mailbox", "success")
+            return redirect(url_for("settings", id=id))
 
         except Exception:
             flash("Email was not sent, try again.", "danger")
-            return redirect(url_for("user_dashboard"))
-
-    # elif change_user_password.submit_password.data and change_user_password.validate():
-    #     user_data_to_update.password = change_user_password.password.data
-    #     db.session.commit()
-    #     flash("Password has been successfully changed", "success")
-    #     return redirect(url_for("settings", id=id))
+            return redirect(url_for("settings", id=id))
 
     return render_template("user/settings.html",
                            form=form,
                            profile_pic_form=profile_pic_form,
-                           user_data_to_update=user_data_to_update,
+                           user_data_to_update=user,
                            pic_file=pic_file,
                            button_form=button_form)
 
 
+# ============================= post_page ==============================
 @app.route("/posts_page/<int:id>", methods=["GET"])
 def posts_page(id):
     post = db.get_or_404(Post, id)
     return render_template("posts_page.html", post=post)
 
 
+# ============================= delete_account ==============================
 @app.route("/delete_account/<int:id>", methods=["GET"])
 def delete_account(id):
+    try:
+        if current_user.id == id:
+            user_to_delete = db.get_or_404(User, id)
+            db.session.delete(user_to_delete)
 
-    if current_user.id == id:
-        user_to_delete = db.get_or_404(User, id)
-        db.session.delete(user_to_delete)
+            db.session.commit()
 
+            # Delete user profile pic after deleting an account to save space.
+            try:
+                profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
+                os.remove(profile_pic_path)
+            except FileNotFoundError:
+                pass
+
+            # logout_user prevents flash messages from being displayed when redirected to the login page.
+            logout_user()
+
+            flash("The account has been deleted", "success")
+            return redirect(url_for("login"))
+
+    except AttributeError:
+        flash("You don't have permission to this action", "danger")
+        return redirect(url_for("home"))
+
+
+# ============================= change_user_password ==============================
+@app.route("/change_user_password/<token>", methods=["GET", "POST"])
+def change_user_password(token):
+    form = ChangePasswordForm()
+
+    if form.validate_on_submit():
+        user_email = serializer.loads(token, max_age=80)
+        user = db.session.execute(db.select(User).filter_by(email=user_email)).scalar()
+
+        user.password = form.new_password.data
         db.session.commit()
 
-        # Delete user profile pic after deleting an account to save space.
-        try:
-            profile_pic_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.profile_pic)
-            os.remove(profile_pic_path)
-        except FileNotFoundError:
-            pass
-
-        # logout_user prevents flash messages from being displayed when redirected to the login page.
-        logout_user()
-
-        flash("The account has been deleted", "success")
+        flash("Password has been successfully changed", "success")
         return redirect(url_for("login"))
 
-    flash("You don't have permission to this action", "danger")
-    return redirect(url_for("settings", id=id))
+    return render_template("user/change_user_password.html", form=form)
