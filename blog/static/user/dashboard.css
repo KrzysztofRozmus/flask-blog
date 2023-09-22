@@ -67,18 +67,14 @@
     object-fit: cover;
 }
 
-
 .user-main {
     background-color: steelblue;
     gap: 0.9rem;
 }
 
-.user-main-profile {
-    background-color: lightgray;
-}
 
-.user-main,
-.user-main-profile {
+
+.user-main {
     flex: 6;
     border-radius: 8px;
     display: grid;
@@ -88,6 +84,15 @@
 
 .user-main p {
     text-align: center;
+}
+
+.user-main-profile {
+    background-color: lightgray;
+    flex: 6;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+
 }
 
 .form-field-user-settings {
@@ -120,16 +125,17 @@
 
 .user-profile {
     display: flex;
-    margin-top: 5.4rem;
-    margin-left: 5rem;
-    gap: 2rem
+    gap: 2.5rem;
+    width: auto;
+    border-radius: 5px;
+    margin-top: 6rem;
 }
 
 .user-data-labels {
     font-size: 1.2rem;
 }
 
-.huj {
+.email-settings {
     margin-top: 1rem;
 }
 
@@ -142,7 +148,7 @@
 
 .user-profile p,
 .user-profile h3 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
 }
 
 .update-user-form-label {

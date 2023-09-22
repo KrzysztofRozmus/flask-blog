@@ -10,7 +10,8 @@ from PIL import Image
 def save_profile_picture(profile_pic_form) -> str:
     """Save profile picture changed by user to database and static/profile_pic folder.
 
-    :param profile_pic_form: just type picture form without any methods after dot."""
+    :param profile_pic_form: just type picture form without any methods after dot.
+    """
 
     picture_size = (128, 128)
 
@@ -46,5 +47,5 @@ def name_and_save_post_picture(obj, post_pic_file) -> str:
 
 def delete_profile_picture(profile_pic_folder) -> None:
     profile_pic_path = os.path.join(profile_pic_folder, current_user.profile_pic)
-    
+
     return os.remove(profile_pic_path)

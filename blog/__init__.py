@@ -9,9 +9,7 @@ from flask_ckeditor import CKEditor
 from flask_mail import Mail
 from itsdangerous.url_safe import URLSafeTimedSerializer
 
-
 load_dotenv(".env")
-
 
 # ========== App ==========
 app = Flask(__name__)
