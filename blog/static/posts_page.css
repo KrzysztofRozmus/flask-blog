@@ -1,13 +1,22 @@
 .post-page-div,
+.add-post-comments,
 .post-comments {
     background-color: white;
     width: 60%;
     margin-top: 100px;
-    padding: 3rem;
+    padding: 2.5rem;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 5rem;
+}
+
+.post-comments {
+    margin-bottom: 2rem;
+}
+
+.add-post-comments h2,
+.post-comments h2 {
+    margin-bottom: 1.5rem;
 }
 
 .post-page-div h1 {
@@ -25,4 +34,30 @@
 
 .post-page-content p {
     font-size: 1.2rem;
+}
+
+.comment-content {
+    border: 1px solid steelblue;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.submit-comment-button {
+    padding: 10px;
+    width: 15%;
+    border-radius: 20px;
+    margin-top: 1.5rem;
+    border: none;
+    color: black;
+    font-size: 18px;
+    background-image: linear-gradient(45deg, steelblue, lightskyblue);
+}
+
+.submit-comment-button:active {
+    transform: translateY(2px);
+}
+
+.submit-comment-button:hover {
+    cursor: pointer;
 }

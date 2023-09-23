@@ -3,9 +3,11 @@ from flask_login import (login_user, login_required, logout_user,
                          fresh_login_required, login_fresh, current_user)
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
+from blog.forms.comment import CommentForm
 from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm
 from blog.models.user import User
 from blog.models.post import Post
+from blog.models.comment import Comment
 from datetime import timedelta
 from blog.functions import save_profile_picture, delete_profile_picture
 from flask_mail import Message
@@ -181,10 +183,22 @@ def settings(id):
 
 
 # ============================= post_page ==============================
-@app.route("/posts_page/<int:id>", methods=["GET"])
+@app.route("/posts_page/<int:id>", methods=["GET", "POST"])
 def posts_page(id):
+    form = CommentForm()
     post = db.get_or_404(Post, id)
-    return render_template("posts_page.html", post=post)
+    comments = db.session.execute(db.select(Comment).order_by(Comment.date_posted)).scalars()
+
+    if form.validate_on_submit():
+        new_comment = Comment(content=form.content.data)
+
+        db.session.add(new_comment)
+        db.session.commit()
+
+        flash("Comment added successfully", "success")
+        return redirect(url_for("posts_page", id=post.id))
+
+    return render_template("posts_page.html", post=post, form=form, comments=comments)
 
 
 # ============================= delete_account ==============================

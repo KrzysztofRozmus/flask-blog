@@ -7,11 +7,10 @@ from wtforms.widgets import TextArea
 from flask_admin.form import ImageUploadField
 from blog.functions import name_and_save_post_picture
 from flask_wtf.file import FileAllowed
-from sqlalchemy.orm import mapped_column
-import datetime
+from sqlalchemy.orm import mapped_column, relationship
 
 
-class Post(db.Model, UserMixin):
+class Post(db.Model):
     id = mapped_column(db.Integer, primary_key=True)
     title = mapped_column(db.String(120), nullable=False)
     content = mapped_column(db.Text, nullable=False)
@@ -19,10 +18,15 @@ class Post(db.Model, UserMixin):
     post_title_pic = mapped_column(db.String(40), nullable=False, default="default_post_title_pic.png")
     date_posted = mapped_column(db.DateTime, nullable=False, default=current_datetime)
 
-    def __init__(self, title, content, author, date_posted=None):
+    user_id = mapped_column(db.ForeignKey("user.id"))
+    user = relationship('User', backref='posts', lazy=True)
+
+    def __init__(self, title, content, author, user_id, user, date_posted=None):
         self.title = title
         self.content = content
         self.author = author
+        self.user_id = user_id
+        self.user = user
         self.date_posted = date_posted
 
     def __repr__(self):

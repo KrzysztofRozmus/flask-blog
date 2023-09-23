@@ -16,9 +16,35 @@
 
 </div>
 
+
+<div class="add-post-comments">
+    <h2>Add comment</h2>
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.content(class="add-post-comments") }}
+
+
+        {{ form.submit(class="submit-comment-button") }}
+    </form>
+
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }}
+</div>
+
 <div class="post-comments">
     <h2>Comments</h2>
     
+    {% for comment in comments %}
+
+    <div class="comment-content">
+        <p>{{ comment.content | safe }}</p>
+    </div>
+
+    {% endfor %}
 </div>
+
+
 
 {% endblock content %}
