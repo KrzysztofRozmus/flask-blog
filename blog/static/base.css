@@ -172,7 +172,7 @@ signup form after displaying an error under the box */
 #advertisement-2,
 #advertisement-3,
 #advertisement-4 {
-    background-color: lightblue;
+    background-color: steelblue;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -180,4 +180,21 @@ signup form after displaying an error under the box */
     font-size: 1.3rem;
     border-radius: 5px;
     min-height: 8rem;
+    border: 1px solid white;
+    color: white;
 }
+
+#advertisement-1:hover,
+#advertisement-2:hover,
+#advertisement-3:hover,
+#advertisement-4:hover {
+    cursor: pointer;
+}
+
+/* #advertisement-1:active,
+#advertisement-2:active,
+#advertisement-3:active,
+#advertisement-4:active {
+    transform: scale(1.02);
+    transition: all 0.2s ease 0;
+} */

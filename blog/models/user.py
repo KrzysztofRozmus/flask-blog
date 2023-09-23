@@ -5,16 +5,17 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_login import UserMixin
 from flask_admin.menu import MenuLink
+from sqlalchemy.orm import mapped_column
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(163), nullable=False)
-    date_joined = db.Column(db.DateTime, nullable=False, default=current_datetime)
-    profile_pic = db.Column(db.String(40), nullable=False, default="default_pic.png")
-    _is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    id = mapped_column(db.Integer, primary_key=True)
+    username = mapped_column(db.String(50), unique=True, nullable=False)
+    email = mapped_column(db.String(50), unique=True, nullable=False)
+    password = mapped_column(db.String(163), nullable=False)
+    date_joined = mapped_column(db.DateTime, nullable=False, default=current_datetime)
+    profile_pic = mapped_column(db.String(40), nullable=False, default="default_pic.png")
+    _is_admin = mapped_column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, username, email, password, date_joined, _is_admin=False):
         self.username = username
@@ -83,5 +84,6 @@ class UserView(ModelView):
             form.username.render_kw = {'readonly': True}
 
         return form
+
 
 admin.add_view(UserView(User, db.session))

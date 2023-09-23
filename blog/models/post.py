@@ -7,15 +7,17 @@ from wtforms.widgets import TextArea
 from flask_admin.form import ImageUploadField
 from blog.functions import name_and_save_post_picture
 from flask_wtf.file import FileAllowed
+from sqlalchemy.orm import mapped_column
+import datetime
 
 
 class Post(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String, nullable=False, default="Admin")
-    post_title_pic = db.Column(db.String(40), nullable=False, default="default_post_title_pic.png")
-    date_posted = db.Column(db.DateTime, nullable=False, default=current_datetime)
+    id = mapped_column(db.Integer, primary_key=True)
+    title = mapped_column(db.String(120), nullable=False)
+    content = mapped_column(db.Text, nullable=False)
+    author = mapped_column(db.String, nullable=False, default="Admin")
+    post_title_pic = mapped_column(db.String(40), nullable=False, default="default_post_title_pic.png")
+    date_posted = mapped_column(db.DateTime, nullable=False, default=current_datetime)
 
     def __init__(self, title, content, author, date_posted=None):
         self.title = title
@@ -56,8 +58,8 @@ class PostView(ModelView):
                                                                 namegen=name_and_save_post_picture,
                                                                 max_size=(320, 240, True))}
 
-    # Display html text as Markup text on Admin Panel.
-    column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content)}
+    # Display html text as Markup text on Admin Panel and only 150 characters to save space.
+    column_formatters = {'content': lambda view, column, model, parameters: Markup(model.content[:150])}
 
     def on_model_change(self, form, model, is_created):
         """Method adds created post picture file name by name_and_save_post_picture function to database"""
@@ -66,5 +68,6 @@ class PostView(ModelView):
             model.post_title_pic = post_pic_file_name
 
         return super().on_model_change(form, model, is_created)
-    
+
+
 admin.add_view(PostView(Post, db.session))

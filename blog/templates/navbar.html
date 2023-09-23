@@ -14,7 +14,7 @@
             {% if current_user.is_authenticated %}
 
                 {% if current_user.username == "Admin" %}
-                    <li><a class="login-link" href="{{ url_for('admin.index') }}">Dashboard</a></li>
+                    <li><a class="login-link" href="{{ url_for('admin.index') }}">Admin Panel</a></li>
                 {% else %}
                     <li><a class="login-link" href="{{ url_for('user_dashboard') }}">Dashboard</a></li>
                 {% endif %}

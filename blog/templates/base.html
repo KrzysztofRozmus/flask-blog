@@ -22,16 +22,16 @@
     {% include "navbar.html" %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                <li class="{{ category }}">
-                    <span class="flash-close-button" onclick="this.parentElement.style.display='none';">&times;</span>
-                    {{ message }}
-                </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% if messages %}
+    <ul>
+        {% for category, message in messages %}
+        <li class="{{ category }}">
+            <span class="flash-close-button" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% endwith %}
 
     <div class="main-content">
@@ -45,7 +45,7 @@
 
                 {% for post in posts %}
                 <div class="post-box">
-                    
+
                     <div class="img-div">
                         <img src="{{ url_for('static', filename='post_title_pics/' + post.post_title_pic) }}" alt="">
                     </div>
@@ -66,10 +66,19 @@
             </div>
 
             <div class="advertisement-container">
-                <div id="advertisement-1">Advertisement 1</div>
-                <div id="advertisement-2">Advertisement 2</div>
-                <div id="advertisement-3">Advertisement 3</div>
-                <div id="advertisement-4">Advertisement 4</div>
+                <a href="">
+                    <div id="advertisement-1">Advertisement 1</div>
+                </a>
+                <a href="">
+                    <div id="advertisement-2">Advertisement 2</div>
+                </a>
+                <a href="">
+                    <div id="advertisement-3">Advertisement 3</div>
+                </a>
+                <a href="">
+                    <div id="advertisement-4">Advertisement 4</div>
+                </a>
+
             </div>
 
         </div>
