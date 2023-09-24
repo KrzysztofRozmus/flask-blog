@@ -12,7 +12,6 @@ from datetime import timedelta
 from blog.functions import save_profile_picture, delete_profile_picture
 from flask_mail import Message
 import os
-from sqlalchemy import and_
 
 
 # ============================= load_user ==============================
@@ -27,7 +26,7 @@ def home():
     # Variable for displaying posts only on home page.
     home_page = True
 
-    posts = db.session.execute(db.select(Post).order_by(Post.date_posted)).scalars()
+    posts = db.session.execute(db.select(Post).order_by(Post.date_posted.desc())).scalars()
     return render_template("base.html", posts=posts, home_page=home_page)
 
 
@@ -192,14 +191,14 @@ def posts_page(id):
     number_of_comments = db.session.query(Comment).filter_by(post_id=id).count()
 
     # Inner join is used here.
-    '''
-    SELECT user.username, comment.date_posted, comment.content,
-    FROM comment
-    JOIN user ON comment.user_id = user.id
-    '''
-    comments = db.session.query(Comment.date_posted,
-                                Comment.content,
-                                User.username).filter_by(post_id=id).order_by(Comment.date_posted.desc()).join(User).all()
+    """
+    SELECT comment.date_posted, comment.content, user.username
+    FROM comment JOIN user ON user.id = comment.user_id
+    WHERE comment.post_id = {id} ORDER BY comment.date_posted DESC;
+    """
+    comments = db.session.execute(db.select(Comment.date_posted,
+                                            Comment.content,
+                                            User.username).filter_by(post_id=id).order_by(Comment.date_posted.desc()).join(User)).all()
 
     if add_new_comment_form.validate_on_submit():
         new_comment = Comment(content=add_new_comment_form.content.data,

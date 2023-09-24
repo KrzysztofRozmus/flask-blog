@@ -17,7 +17,7 @@ class Post(db.Model):
     post_title_pic = mapped_column(db.String(40), nullable=False, default="default_post_title_pic.png")
     date_posted = mapped_column(db.DateTime, nullable=False, default=current_datetime)
         
-    comment = relationship("Comment", back_populates="post", passive_deletes=True)
+    comment = relationship("Comment", back_populates="post", cascade="delete")
 
     def __init__(self, title, content, author, date_posted=None):
         self.title = title
