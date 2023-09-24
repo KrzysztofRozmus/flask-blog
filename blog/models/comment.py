@@ -14,8 +14,8 @@ class Comment(db.Model):
     # user = relationship('user', backref='comments', lazy=True)
     # post = relationship('Post', backref='comments', lazy=True)
 
-    user = relationship("User", back_populates="comment")
-    post = relationship("Post", back_populates="comment")
+    user = relationship("User", back_populates="comment", passive_deletes=True)
+    post = relationship("Post", back_populates="comment", passive_deletes=True)
 
     def __init__(self, content, user_id, post_id, date_posted=None):
         self.content = content

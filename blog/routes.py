@@ -12,6 +12,7 @@ from datetime import timedelta
 from blog.functions import save_profile_picture, delete_profile_picture
 from flask_mail import Message
 import os
+from sqlalchemy import and_
 
 
 # ============================= load_user ==============================
@@ -188,15 +189,17 @@ def settings(id):
 def posts_page(id):
     add_new_comment_form = CommentForm()
     post = db.get_or_404(Post, id)
-    number_of_comments = db.session.query(Comment).count()
+    number_of_comments = db.session.query(Comment).filter_by(post_id=id).count()
 
     # Inner join is used here.
     '''
-    SELECT user.username, comment.date_posted, comment.content,  
+    SELECT user.username, comment.date_posted, comment.content,
     FROM comment
     JOIN user ON comment.user_id = user.id
     '''
-    comments = db.session.query(User.username, Comment.date_posted, Comment.content).join(User).all()
+    comments = db.session.query(Comment.date_posted,
+                                Comment.content,
+                                User.username).filter_by(post_id=id).order_by(Comment.date_posted.desc()).join(User).all()
 
     if add_new_comment_form.validate_on_submit():
         new_comment = Comment(content=add_new_comment_form.content.data,

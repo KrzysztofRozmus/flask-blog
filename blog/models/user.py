@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     profile_pic = mapped_column(db.String(40), nullable=False, default="default_pic.png")
     _is_admin = mapped_column(db.Boolean, nullable=False, default=False)
     
-    comment = relationship("Comment", back_populates="user")
+    comment = relationship("Comment", back_populates="user", passive_deletes=True)
     
 
     def __init__(self, username, email, password, date_joined, _is_admin=False):
