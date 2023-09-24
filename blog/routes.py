@@ -98,9 +98,10 @@ def logout():
 @app.route("/user_dashboard", methods=["GET", "POST"])
 @login_required
 def user_dashboard():
+    number_of_user_comments = db.session.query(Comment).filter_by(user_id=current_user.id).count()
 
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
-    return render_template("user/dashboard.html", pic_file=pic_file)
+    return render_template("user/dashboard.html", pic_file=pic_file, number_of_user_comments=number_of_user_comments)
 
 
 # ============================= settings ==============================

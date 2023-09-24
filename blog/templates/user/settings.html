@@ -35,16 +35,31 @@
                     <p class="update-user-form-label">Change user data</p>
 
                     <div class="email-and-confirmpassword">
-                        {{ render_field(form.username.label, class="user-data-labels") }}
-                        {{ render_field(form.username, class="form-field-user-settings",
-                        placeholder=current_user.username,
-                        minlength="3")}}
 
-                        <div class="email-settings">
+                        {{ render_field(form.username.label, class="user-data-labels") }}
+
+                        {% if form.username.errors %}
+                            {{ render_field(form.username, class="form-field-user-settings", style="border: 1px solid red;",
+                            placeholder=current_user.username,
+                            minlength="3")}}
+                        {% else %}
+                            {{ render_field(form.username, class="form-field-user-settings",
+                            placeholder=current_user.username,
+                            minlength="3")}}
+                        {% endif %}
+
+                        <div class="email-settings">                            
                             {{ render_field(form.email.label, class="user-data-labels") }}
-                            {{ render_field(form.email, class="form-field-user-settings",
-                            placeholder=current_user.email) }}
+
+                            {% if form.email.errors %}
+                                {{ render_field(form.email, class="form-field-user-settings", style="border: 1px solid red;",
+                                placeholder=current_user.email) }}
+                            {% else %}
+                                {{ render_field(form.email, class="form-field-user-settings",
+                                placeholder=current_user.email) }}
+                            {% endif %}
                         </div>
+
                     </div>
 
                     {{ form.submit(class="update-user-button") }}
