@@ -1,6 +1,5 @@
 from blog import db, current_datetime, app, admin
 from flask import Markup
-from flask_login import UserMixin
 from flask_admin.contrib.sqla import ModelView
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
@@ -17,16 +16,13 @@ class Post(db.Model):
     author = mapped_column(db.String, nullable=False, default="Admin")
     post_title_pic = mapped_column(db.String(40), nullable=False, default="default_post_title_pic.png")
     date_posted = mapped_column(db.DateTime, nullable=False, default=current_datetime)
+        
+    comment = relationship("Comment", back_populates="post")
 
-    user_id = mapped_column(db.ForeignKey("user.id"))
-    user = relationship('User', backref='posts', lazy=True)
-
-    def __init__(self, title, content, author, user_id, user, date_posted=None):
+    def __init__(self, title, content, author, date_posted=None):
         self.title = title
         self.content = content
         self.author = author
-        self.user_id = user_id
-        self.user = user
         self.date_posted = date_posted
 
     def __repr__(self):

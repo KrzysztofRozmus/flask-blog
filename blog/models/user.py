@@ -5,7 +5,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_login import UserMixin
 from flask_admin.menu import MenuLink
-from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import mapped_column, relationship
 
 
 class User(db.Model, UserMixin):
@@ -16,6 +16,9 @@ class User(db.Model, UserMixin):
     date_joined = mapped_column(db.DateTime, nullable=False, default=current_datetime)
     profile_pic = mapped_column(db.String(40), nullable=False, default="default_pic.png")
     _is_admin = mapped_column(db.Boolean, nullable=False, default=False)
+    
+    comment = relationship("Comment", back_populates="user")
+    
 
     def __init__(self, username, email, password, date_joined, _is_admin=False):
         self.username = username

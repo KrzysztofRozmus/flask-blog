@@ -17,34 +17,46 @@
 </div>
 
 
+{% if current_user.is_authenticated %}
 <div class="add-post-comments">
     <h2>Add comment</h2>
 
     <form method="post">
-        {{ form.hidden_tag() }}
+        {{ add_new_comment_form.hidden_tag() }}
 
-        {{ form.content(class="add-post-comments") }}
+        {{ add_new_comment_form.content(class="add-post-comments") }}
 
 
-        {{ form.submit(class="submit-comment-button") }}
+        {{ add_new_comment_form.submit(class="submit-comment-button") }}
     </form>
 
     {{ ckeditor.load() }}
     {{ ckeditor.config(name='content') }}
 </div>
+{% endif %}
+
+
 
 <div class="post-comments">
-    <h2>Comments</h2>
-    
+    <h2>Comments ({{ number_of_comments }})</h2>
+
     {% for comment in comments %}
-
     <div class="comment-content">
-        <p>{{ comment.content | safe }}</p>
+
+        <div class="user-datetime">
+            <!-- username -->
+            <p id="comment-username">{{ comment[0] }}</p>
+
+            <!-- datetime -->
+            <p id="comment-datetime">{{ comment[1] }}</p>
+        </div>
+
+        <!-- content -->
+        <p>{{ comment[2] | safe }}</p>
+
     </div>
-
     {% endfor %}
+
 </div>
-
-
 
 {% endblock content %}

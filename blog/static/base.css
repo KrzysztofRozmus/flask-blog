@@ -146,6 +146,10 @@ signup form after displaying an error under the box */
     padding: 0.5rem 1rem;
 }
 
+.title-div {
+    margin-top: 0.5rem;
+}
+
 .date-div {
     border-top: 1px solid black;
     display: flex;

@@ -185,12 +185,22 @@ def settings(id):
 # ============================= post_page ==============================
 @app.route("/posts_page/<int:id>", methods=["GET", "POST"])
 def posts_page(id):
-    form = CommentForm()
+    add_new_comment_form = CommentForm()
     post = db.get_or_404(Post, id)
-    comments = db.session.execute(db.select(Comment).order_by(Comment.date_posted)).scalars()
+    number_of_comments = db.session.query(Comment).count()
 
-    if form.validate_on_submit():
-        new_comment = Comment(content=form.content.data)
+    # Inner join is used here.
+    '''
+    SELECT user.username, comment.date_posted, comment.content,  
+    FROM comment
+    JOIN user ON comment.user_id = user.id
+    '''
+    comments = db.session.query(User.username, Comment.date_posted, Comment.content).join(User).all()
+
+    if add_new_comment_form.validate_on_submit():
+        new_comment = Comment(content=add_new_comment_form.content.data,
+                              user_id=current_user.id,
+                              post_id=id)
 
         db.session.add(new_comment)
         db.session.commit()
@@ -198,7 +208,11 @@ def posts_page(id):
         flash("Comment added successfully", "success")
         return redirect(url_for("posts_page", id=post.id))
 
-    return render_template("posts_page.html", post=post, form=form, comments=comments)
+    return render_template("posts_page.html",
+                           post=post,
+                           add_new_comment_form=add_new_comment_form,
+                           comments=comments,
+                           number_of_comments=number_of_comments)
 
 
 # ============================= delete_account ==============================
