@@ -39,7 +39,7 @@
 .comment-content {
     border: 1px solid steelblue;
     margin-bottom: 1.2rem;
-    padding: 0.7rem;
+    padding: 0.6rem;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -67,13 +67,52 @@
 
 .user-datetime {
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    
+}
+
+.edit-delete-comment {
+    display: flex;
+    flex: 2;
+    justify-content: flex-end;
+}
+
+.edit-delete-comment,
+#comment-username,
+#comment-datetime {
+    display: flex;
+    align-items: center;
 }
 
 #comment-username {
     font-weight: 600;
+    flex: 3;
 }
 
 #comment-datetime {
     font-style: italic;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#edit-comment,
+#delete-comment {
+    padding: 3px;
+    width: 21%;
+    border-radius: 20px;
+    border: none;
+    color: black;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 1.8rem;
+}
+
+#edit-comment {
+    background-image: linear-gradient(45deg, steelblue, lightskyblue);    
+}
+
+#delete-comment {
+    background-image: linear-gradient(45deg, red, orange);
 }

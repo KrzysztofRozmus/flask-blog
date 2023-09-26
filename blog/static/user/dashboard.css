@@ -72,8 +72,6 @@
     gap: 0.9rem;
 }
 
-
-
 .user-main {
     flex: 6;
     border-radius: 8px;
@@ -148,7 +146,7 @@
 
 .user-profile p,
 .user-profile h3 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 .update-user-form-label {

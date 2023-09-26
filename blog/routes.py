@@ -171,7 +171,7 @@ def settings(id):
             flash(f"Email was sent successfully. Check mailbox", "success")
             return redirect(url_for("settings", id=id))
 
-        except Exception:            
+        except Exception:
             flash("Email was not sent, try again.", "danger")
             return redirect(url_for("settings", id=id))
 
@@ -192,12 +192,14 @@ def posts_page(id):
 
     # Inner join is used here.
     """
-    SELECT comment.date_posted, comment.content, user.username
+    SELECT comment.date_posted, comment.content, comment.user.id, comment.id ,user.username
     FROM comment JOIN user ON user.id = comment.user_id
     WHERE comment.post_id = {id} ORDER BY comment.date_posted DESC;
     """
     comments = db.session.execute(db.select(Comment.date_posted,
                                             Comment.content,
+                                            Comment.user_id,
+                                            Comment.id,
                                             User.username).filter_by(post_id=id).order_by(Comment.date_posted.desc()).join(User)).all()
 
     if add_new_comment_form.validate_on_submit():
@@ -290,3 +292,20 @@ def reset_user_password():
             return redirect(url_for("reset_user_password"))
 
     return render_template("user/reset_user_password.html", form=form)
+
+
+# ============================= delete_comment ==============================
+@app.route("/delete_comment/<int:comment_id>/<int:post_id>/<int:user_id>", methods=["GET"])
+def delete_comment(comment_id, post_id, user_id):
+
+    if current_user.id == user_id:
+        comment_to_delete = db.get_or_404(Comment, comment_id)
+
+        db.session.delete(comment_to_delete)
+        db.session.commit()
+
+        flash("Comment deleted successfully", "success")
+        return redirect(url_for("posts_page", id=post_id))
+
+    flash("Comment not deleted, something went wrong", "info")
+    return redirect(url_for("posts_page", id=post_id))

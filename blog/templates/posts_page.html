@@ -44,11 +44,24 @@
     <div class="comment-content">
 
         <div class="user-datetime">
-            <p id="comment-username">{{ comment[2] }}</p>
-            <p id="comment-datetime">{{ comment[0] }}</p>
+
+            <p id="comment-username">{{ comment.username }}</p>
+
+            <div class="edit-delete-comment">
+                {% if current_user.id == comment.user_id %}
+                    <a id="edit-comment" href="">Edit</a>
+                    <a id="delete-comment" href="{{ url_for('delete_comment',
+                                                             comment_id=comment.id,
+                                                             post_id=post.id,
+                                                             user_id=comment.user_id) }}">Delete</a>
+                {% endif %}
+            </div>
+
+            <p id="comment-datetime">{{ comment.date_posted }}</p>
+
         </div>
 
-        <p>{{ comment[1] | safe }}</p>
+        <p>{{ comment.content | safe }}</p>
 
     </div>
     {% endfor %}
