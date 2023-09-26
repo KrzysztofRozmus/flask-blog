@@ -13,7 +13,7 @@
         {{ render_field(form.email, class="form-field email") }}
         {{ render_field(form.password, class="form-field password") }}
 
-        <a href="#" class="forgot-password-link">Forgot Password?</a>
+        <a href="{{ url_for('reset_user_password') }}" class="forgot-password-link">Forgot Password?</a>
 
         {{ form.submit(class="login-button") }}
     </form>

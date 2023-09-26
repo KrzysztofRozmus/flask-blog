@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, EmailField, SubmitField, PasswordField
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import Length, ValidationError, DataRequired, EqualTo
+from wtforms.validators import Length, ValidationError, DataRequired, EqualTo, Email
 from blog.models.user import User
 from blog import db
 
@@ -50,3 +50,10 @@ class ChangePasswordForm(FlaskForm):
                                                                              EqualTo("new_password", "Field must be equal to New password.")],
                                          render_kw={"placeholder": "Confirm new password"})
     submit_password = SubmitField("Update")
+
+
+# ============================= ResetPasswordForm ==============================
+class ResetPasswordForm(FlaskForm):
+    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=3)], render_kw={"placeholder": "Email"})
+
+    submit = SubmitField("Send")

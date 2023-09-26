@@ -4,7 +4,7 @@ from flask_login import (login_user, login_required, logout_user,
 from flask import render_template, redirect, url_for, flash
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.comment import CommentForm
-from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm
+from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm, ResetPasswordForm
 from blog.models.user import User
 from blog.models.post import Post
 from blog.models.comment import Comment
@@ -171,7 +171,7 @@ def settings(id):
             flash(f"Email was sent successfully. Check mailbox", "success")
             return redirect(url_for("settings", id=id))
 
-        except Exception:
+        except Exception:            
             flash("Email was not sent, try again.", "danger")
             return redirect(url_for("settings", id=id))
 
@@ -262,3 +262,31 @@ def change_user_password(token):
         return redirect(url_for("login"))
 
     return render_template("user/change_user_password.html", form=form)
+
+
+# ============================= reset_user_password ==============================
+@app.route("/reset_user_password", methods=["GET", "POST"])
+def reset_user_password():
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        msg = Message(subject="Reset your password",
+                      recipients=[form.email.data],
+                      sender=app.config["MAIL_USERNAME"])
+
+        token = serializer.dumps(form.email.data)
+
+        link = url_for("change_user_password", token=token, _external=True)
+
+        msg.body = f"Click to change password: {link}"
+
+        try:
+            mail.send(msg)
+            flash(f"Email was sent successfully. Check mailbox", "success")
+            return redirect(url_for("reset_user_password"))
+
+        except Exception:
+            flash("Email was not sent, try again.", "danger")
+            return redirect(url_for("reset_user_password"))
+
+    return render_template("user/reset_user_password.html", form=form)

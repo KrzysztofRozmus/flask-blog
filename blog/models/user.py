@@ -16,9 +16,8 @@ class User(db.Model, UserMixin):
     date_joined = mapped_column(db.DateTime, nullable=False, default=current_datetime)
     profile_pic = mapped_column(db.String(40), nullable=False, default="default_pic.png")
     _is_admin = mapped_column(db.Boolean, nullable=False, default=False)
-    
+
     comment = relationship("Comment", back_populates="user", passive_deletes=True)
-    
 
     def __init__(self, username, email, password, date_joined, _is_admin=False):
         self.username = username
@@ -31,10 +30,10 @@ class User(db.Model, UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.date_joined}', '{self._is_admin}')"
 
 
-# Method adds Blog link in Admin Panel for home page of the blog
-admin.add_link(MenuLink(name='Blog', url='/'))
+# Method adds a home view as a Blog link on the left side of the Admin Panel.
+admin.add_menu_item(MenuLink(name='Blog', url='/', category=''))
 
-# Method adds Logout link in Admin Panel for logout view
+# Method adds a logout view as a Logout link on the right side of the Admin Panel.
 admin.add_link(MenuLink(name='Logout', url='/logout'))
 
 
