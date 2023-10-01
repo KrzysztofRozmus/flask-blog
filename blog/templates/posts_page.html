@@ -26,7 +26,6 @@
 
         {{ add_new_comment_form.content(class="add-post-comments") }}
 
-
         {{ add_new_comment_form.submit(class="submit-comment-button") }}
     </form>
 
@@ -45,11 +44,18 @@
 
         <div class="user-datetime">
 
-            <p id="comment-username">{{ comment.username }}</p>
+            {% if comment.username == "Admin" %}
+                <p id="comment-username" style="color: orange;">{{ comment.username }}</p>
+            {% else %}
+                <p id="comment-username">{{ comment.username }}</p>
+            {% endif %}
 
             <div class="edit-delete-comment">
-                {% if current_user.id == comment.user_id %}
-                    <a id="edit-comment" href="">Edit</a>
+                {% if current_user.id == comment.user_id or current_user.username == "Admin" %}
+                    <a id="edit-comment" href="{{ url_for('edit_comment',
+                                                        comment_id=comment.id,
+                                                        user_id=comment.user_id) }}">Edit</a>
+
                     <a id="delete-comment" href="{{ url_for('delete_comment',
                                                              comment_id=comment.id,
                                                              post_id=post.id,

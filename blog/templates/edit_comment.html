@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+<div class="add-post-comments">
+    <h2>Edit comment</h2>
+
+    <form method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.content(class="add-post-comments") }}
+
+        {{ form.submit(class="submit-comment-button") }}
+    </form>
+
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }}
+</div>
+{% endif %}
+
+{% endblock content %}

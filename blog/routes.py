@@ -1,7 +1,7 @@
 from blog import app, db, login_manager, current_datetime, mail, serializer
 from flask_login import (login_user, login_required, logout_user,
                          fresh_login_required, login_fresh, current_user)
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, abort
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.comment import CommentForm
 from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm, ResetPasswordForm
@@ -226,8 +226,8 @@ def delete_account(id):
     try:
         if current_user.id == id:
             user_to_delete = db.get_or_404(User, id)
-            db.session.delete(user_to_delete)
 
+            db.session.delete(user_to_delete)
             db.session.commit()
 
             # Delete user profile pic after deleting an account to save space.
@@ -277,9 +277,7 @@ def reset_user_password():
                       sender=app.config["MAIL_USERNAME"])
 
         token = serializer.dumps(form.email.data)
-
         link = url_for("change_user_password", token=token, _external=True)
-
         msg.body = f"Click to change password: {link}"
 
         try:
@@ -288,7 +286,7 @@ def reset_user_password():
             return redirect(url_for("reset_user_password"))
 
         except Exception:
-            flash("Email was not sent, try again.", "danger")
+            flash("Email was not sent, contact to Admin or try again.", "danger")
             return redirect(url_for("reset_user_password"))
 
     return render_template("user/reset_user_password.html", form=form)
@@ -298,7 +296,7 @@ def reset_user_password():
 @app.route("/delete_comment/<int:comment_id>/<int:post_id>/<int:user_id>", methods=["GET"])
 def delete_comment(comment_id, post_id, user_id):
 
-    if current_user.id == user_id:
+    if current_user.is_authenticated and current_user.id == user_id or current_user.is_authenticated and current_user.username == "Admin":
         comment_to_delete = db.get_or_404(Comment, comment_id)
 
         db.session.delete(comment_to_delete)
@@ -307,5 +305,27 @@ def delete_comment(comment_id, post_id, user_id):
         flash("Comment deleted successfully", "success")
         return redirect(url_for("posts_page", id=post_id))
 
-    flash("Comment not deleted, something went wrong", "info")
-    return redirect(url_for("posts_page", id=post_id))
+    abort(403)
+
+
+# ============================= edit_comment ==============================
+@app.route("/edit_comment/<int:comment_id>/<int:user_id>", methods=["GET", "POST"])
+def edit_comment(comment_id, user_id):
+    form = CommentForm()
+
+    if current_user.is_authenticated and current_user.id == user_id or current_user.is_authenticated and current_user.username == "Admin":
+
+        comment_from_db = db.get_or_404(Comment, comment_id)
+
+        if form.validate_on_submit():
+            comment_from_db.content = form.content.data
+            db.session.commit()
+
+            flash("Comment edited successfully", "success")
+            return redirect(url_for("home"))
+    else:
+        return abort(403)
+
+    form.content.data = comment_from_db.content
+
+    return render_template("edit_comment.html", form=form)
