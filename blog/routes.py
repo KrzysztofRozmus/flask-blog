@@ -172,7 +172,7 @@ def settings(id):
             return redirect(url_for("settings", id=id))
 
         except Exception:
-            flash("Email was not sent, try again.", "danger")
+            flash("Email was not sent, contact with Admin or try again.", "danger")
             return redirect(url_for("settings", id=id))
 
     return render_template("user/settings.html",
@@ -241,11 +241,9 @@ def delete_account(id):
             logout_user()
 
             flash("The account has been deleted", "success")
-            return redirect(url_for("login"))
-
-    except AttributeError:
-        flash("You don't have permission to this action", "danger")
-        return redirect(url_for("home"))
+            return redirect(url_for("login"))        
+    finally:
+        abort(403)
 
 
 # ============================= change_user_password ==============================
@@ -329,3 +327,14 @@ def edit_comment(comment_id, user_id):
     form.content.data = comment_from_db.content
 
     return render_template("edit_comment.html", form=form)
+
+
+# ============================= error_pages ==============================
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('error_pages/403.html'), 403
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error_pages/404.html'), 404

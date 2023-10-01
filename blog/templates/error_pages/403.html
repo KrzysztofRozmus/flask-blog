@@ -1,0 +1,9 @@
+{% extends "error_pages/base.html" %}
+
+{% block content %}
+
+    <h1>You don't have the permission to access this page</h1>
+
+    <a href="{{ url_for('home') }}">Home Page</a>
+    
+{% endblock content %}
