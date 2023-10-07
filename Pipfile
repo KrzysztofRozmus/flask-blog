@@ -16,6 +16,8 @@ pillow = "<=9.5.0-2"
 flask-mail = "*"
 itsdangerous = "*"
 werkzeug = "==2.3.7"
+selenium = "*"
+pytest = "*"
 
 [dev-packages]
 
