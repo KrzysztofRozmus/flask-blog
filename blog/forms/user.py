@@ -54,6 +54,7 @@ class ChangePasswordForm(FlaskForm):
 
 # ============================= ResetPasswordForm ==============================
 class ResetPasswordForm(FlaskForm):
-    email = EmailField("Email", validators=[DataRequired(), Email(), Length(min=3)], render_kw={"placeholder": "Email"})
-
+    email = EmailField("Email", validators=[DataRequired(),
+                                            Email(),
+                                            Length(min=3)], render_kw={"placeholder": "Email"})
     submit = SubmitField("Send")

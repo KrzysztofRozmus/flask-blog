@@ -1,0 +1,22 @@
+{% extends "user/dashboard.html" %}
+
+{% block content2 %}
+
+<div class="search-div">
+    <h1>Type at least one word to search post</h1>
+    
+    <form class="search-form" method="post">    
+        <input class="search-input" type="text" name="input" required>
+        <input class="search-button" type="submit" value="Search">       
+    </form>
+
+    {% if post_in_db %}
+
+        {% for post in post_in_db %}
+            <a id="search-post-title" href=""><p>{{ post.title }}</p></a>
+        {%  endfor %}
+
+    {% endif %}
+</div>
+    
+{% endblock content2 %}

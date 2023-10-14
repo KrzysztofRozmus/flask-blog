@@ -90,7 +90,6 @@
     border-radius: 5px;
     display: flex;
     justify-content: center;
-
 }
 
 .form-field-user-settings {
@@ -192,6 +191,66 @@
 .update-user-button:hover {
     cursor: pointer;
 }
+
+
+
+/* ================================ Search Posts ================================ */
+
+.search-div {
+    width: 80%;
+    height: 80%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.search-div h1 {
+    font-size: 1.5rem;
+}
+
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 90%;
+    height: 20%;
+}
+
+.search-input {
+    font-size: 1.3rem;
+    padding: 0.2rem;
+    width: 100%;
+
+}
+
+.search-button {
+    width: 30%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    color: black;
+    font-size: 18px;
+    background-image: linear-gradient(45deg, steelblue, lightskyblue);
+}
+
+.search-button:active {
+    transform: translateY(2px);
+}
+
+.search-button:hover {
+    cursor: pointer;
+}
+
+#search-post-title {
+    font-size: 1.8rem;
+    align-self: flex-start;    
+}
+
 
 
 

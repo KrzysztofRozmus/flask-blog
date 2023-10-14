@@ -1,7 +1,7 @@
 from blog import app, db, login_manager, current_datetime, mail, serializer
 from flask_login import (login_user, login_required, logout_user,
                          fresh_login_required, login_fresh, current_user)
-from flask import render_template, redirect, url_for, flash, abort
+from flask import render_template, redirect, url_for, flash, abort, request
 from blog.forms.auth import SignupForm, LoginForm
 from blog.forms.comment import CommentForm
 from blog.forms.user import UserForm, ProfilePicForm, ChangePasswordButton, ChangePasswordForm, ResetPasswordForm
@@ -181,6 +181,19 @@ def settings(id):
                            user_data_to_update=user,
                            pic_file=pic_file,
                            button_form=button_form)
+
+
+# ============================= search ==============================
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    post_in_db = None
+    pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
+
+    if request.method == "POST":
+        post_title = request.form["input"]
+        post_in_db = db.session.execute(db.select(Post).filter(Post.title.ilike(f'%{post_title}%'))).scalars()
+
+    return render_template("user/search.html", pic_file=pic_file, post_in_db=post_in_db)
 
 
 # ============================= post_page ==============================

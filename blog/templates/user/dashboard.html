@@ -21,12 +21,14 @@
             <ul class="account-menu">
                 <li><a href="{{ url_for('user_dashboard') }}">Profile</a></li>
                 <li><a href="{{ url_for('settings', id=current_user.id) }}">Settings</a></li>
-                <li><a href="">Search</a></li>
+                <li><a href="{{ url_for('search') }}">Search</a></li>
             </ul>
-        </div>
+        </div>        
 
-
+        
+        
         <div class="user-main-profile">
+            {% block content2 %}
 
             {% if current_user.is_authenticated %}
 
@@ -49,7 +51,8 @@
 
             {% endif %}
 
-        </div>
+            {% endblock content2 %}
+        </div>        
 
     </div>
 </div>
