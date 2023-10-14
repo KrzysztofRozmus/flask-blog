@@ -1,0 +1,11 @@
+.about-container {
+    margin-top: 8rem;
+    background-color: steelblue;
+    padding: 1.5rem;
+    border-radius: 5px;
+}
+
+.about-container p {
+    color: white;
+    font-size: 2rem;
+}

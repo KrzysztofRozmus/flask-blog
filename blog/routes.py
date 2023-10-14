@@ -241,7 +241,7 @@ def delete_account(id):
             logout_user()
 
             flash("The account has been deleted", "success")
-            return redirect(url_for("login"))        
+            return redirect(url_for("login"))
     finally:
         abort(403)
 
@@ -327,6 +327,24 @@ def edit_comment(comment_id, user_id):
     form.content.data = comment_from_db.content
 
     return render_template("edit_comment.html", form=form)
+
+
+# ============================= contact ==============================
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+
+# ============================= services ==============================
+@app.route("/services")
+def services():
+    return render_template("services.html")
+
+
+# ============================= about ==============================
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 # ============================= error_pages ==============================
