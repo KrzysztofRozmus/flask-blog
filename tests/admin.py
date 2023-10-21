@@ -8,9 +8,9 @@ import pytest
 # e.g. for Linux and Firefox: "/home/<user>/Download/geckodriver-v0.33.0-linux32/geckodriver"
 os.environ["PATH"] = "/home/nubian/Download/geckodriver-v0.33.0-linux32/geckodriver"
 
-# True admin data You created in db for testing purposes.
-valid_admin_email_input = "admin@email.com"
-valid_admin_password_input = "admin123"
+# ==================== True admin data You created in db for testing purposes. ====================
+valid_admin_email_input = "admin@example.com"
+valid_admin_password_input = "admin"
 
 
 @pytest.fixture
