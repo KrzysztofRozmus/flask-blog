@@ -43,7 +43,7 @@
 
         {% if home_page %}
         <div class="home-page-posts-container">
-
+            
             <div class="posts-container">
 
                 {% for post in posts %}
@@ -67,27 +67,54 @@
                 {% endfor %}
 
             </div>
-
             <div class="advertisement-container">
+
                 <a href="">
                     <div id="advertisement-1">Advertisement 1</div>
                 </a>
+
                 <a href="">
                     <div id="advertisement-2">Advertisement 2</div>
                 </a>
+
                 <a href="">
                     <div id="advertisement-3">Advertisement 3</div>
                 </a>
+
                 <a href="">
                     <div id="advertisement-4">Advertisement 4</div>
                 </a>
-
             </div>
 
         </div>
-        {% endif %}
+
+
+        <div class="home-page-pagination">
+            {% if posts.has_prev %}
+                <a class="prev-next" href="{{ url_for('home', page=posts.prev_num) }}">preview</a>
+            {% endif %}
+            
+            {% for page in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page %}
+                    {% if posts.page == page %}
+                        <strong class="page-number" style="color: orange; ">{{ page }}</strong>
+                    {% else %}
+                        <a class="page-number page-number-2" href="{{ url_for('home', page=page) }}">{{ page }}</a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+            
+            {% if posts.has_next %}
+                <a class="prev-next" href="{{ url_for('home', page=posts.next_num) }}">next</a>
+            {% endif %}
+        </div>
+
+        {% endif %}        
 
     </div>
+
 
     {% include "footer.html" %}
 

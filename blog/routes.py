@@ -25,8 +25,11 @@ def load_user(id):
 def home():
     # Variable for displaying posts only on home page.
     home_page = True
+    
+    page = request.args.get("page", 1, type=int)
+    posts = db.paginate(db.select(Post).order_by(Post.date_posted.desc()), page=page, per_page=5)
+    # posts = db.session.execute(db.select(Post).order_by(Post.date_posted.desc())).scalars()
 
-    posts = db.session.execute(db.select(Post).order_by(Post.date_posted.desc())).scalars()
     return render_template("base.html", posts=posts, home_page=home_page)
 
 
@@ -72,7 +75,6 @@ def login():
 
     if form.validate_on_submit():
         user = db.session.execute(db.select(User).filter_by(email=form.email.data)).scalar()
-
         login_user(user, remember=True, duration=timedelta(minutes=1))
 
         if current_user.username == "Admin" and current_user._is_admin == True:
@@ -88,7 +90,6 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
-
     logout_user()
     flash("You have been log out.", "info")
     return redirect(url_for("login"))
@@ -99,7 +100,6 @@ def logout():
 @login_required
 def user_dashboard():
     number_of_user_comments = db.session.query(Comment).filter_by(user_id=current_user.id).count()
-
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
     return render_template("user/dashboard.html", pic_file=pic_file, number_of_user_comments=number_of_user_comments)
 
@@ -111,9 +111,7 @@ def settings(id):
     form = UserForm()
     profile_pic_form = ProfilePicForm()
     button_form = ChangePasswordButton()
-
     pic_file = url_for("static", filename=f"profile_pics/{current_user.profile_pic}")
-
     user = db.session.execute(db.select(User).filter_by(id=id)).scalar()
 
     # This if statement is used because of two forms on the same page.
@@ -161,9 +159,7 @@ def settings(id):
                       sender=app.config["MAIL_USERNAME"])
 
         token = serializer.dumps(user.email)
-
         link = url_for("change_user_password", token=token, _external=True)
-
         msg.body = f"Click to change password: {link}"
 
         try:
@@ -267,7 +263,6 @@ def change_user_password(token):
     if form.validate_on_submit():
         user_email = serializer.loads(token, max_age=80)
         user = db.session.execute(db.select(User).filter_by(email=user_email)).scalar()
-
         user.password = form.new_password.data
         db.session.commit()
 
@@ -309,7 +304,6 @@ def delete_comment(comment_id, post_id, user_id):
 
     if current_user.is_authenticated and current_user.id == user_id or current_user.is_authenticated and current_user.username == "Admin":
         comment_to_delete = db.get_or_404(Comment, comment_id)
-
         db.session.delete(comment_to_delete)
         db.session.commit()
 
@@ -325,7 +319,6 @@ def edit_comment(comment_id, user_id):
     form = CommentForm()
 
     if current_user.is_authenticated and current_user.id == user_id or current_user.is_authenticated and current_user.username == "Admin":
-
         comment_from_db = db.get_or_404(Comment, comment_id)
 
         if form.validate_on_submit():

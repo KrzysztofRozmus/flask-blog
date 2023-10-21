@@ -85,7 +85,7 @@ signup form after displaying an error under the box */
 .home-page-posts-container {
     display: flex;
     gap: 10rem;
-    margin-top: 7rem;
+    margin: 7rem 0 7rem 0;
     width: 83%;
     height: auto;
 }
@@ -104,16 +104,7 @@ signup form after displaying an error under the box */
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    /* padding: 1.5rem; */
     border-radius: 5px;
-}
-
-.advertisement-container {
-    border: 1px solid steelblue;
-    border-radius: 5px;
-    width: 100%;
-    height: 40rem;
-    flex: 1;
 }
 
 .post-box {
@@ -168,7 +159,11 @@ signup form after displaying an error under the box */
     flex-direction: column;
     padding: 1.2rem;
     gap: 1.2rem;
-    height: auto;
+    height: fit-content;
+    border: 1px solid steelblue;
+    border-radius: 5px;
+    width: 100%;
+    flex: 1;
 }
 
 
@@ -195,10 +190,43 @@ signup form after displaying an error under the box */
     cursor: pointer;
 }
 
-/* #advertisement-1:active,
+#advertisement-1:active,
 #advertisement-2:active,
 #advertisement-3:active,
 #advertisement-4:active {
     transform: scale(1.02);
     transition: all 0.2s ease 0;
-} */
+}
+
+
+/* ================================ Home Page Pagination ================================ */
+.home-page-pagination {
+    margin-bottom: 5rem;
+    font-size: 1.3rem;    
+}
+
+.home-page-pagination a {
+    margin: 0 0.2rem 
+}
+
+.page-number {
+    display: inline-block;
+    border: 1px steelblue solid;
+    background-color: steelblue;
+    width: 2.2rem;
+    text-align: center;
+    color: white;
+}
+
+.page-number-2:hover {
+    background-color: lightblue;
+}
+
+.prev-next {
+    color: black;
+    text-decoration: none;
+}
+
+.prev-next:hover {
+    color: steelblue;
+}
