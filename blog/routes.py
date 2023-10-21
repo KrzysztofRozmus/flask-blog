@@ -9,9 +9,10 @@ from blog.models.user import User
 from blog.models.post import Post
 from blog.models.comment import Comment
 from datetime import timedelta
-from blog.functions import save_profile_picture, delete_profile_picture
+from blog.functions import save_profile_picture, delete_profile_picture, is_first_admin
 from flask_mail import Message
 import os
+from sqlalchemy.exc import IntegrityError
 
 
 # ============================= load_user ==============================
@@ -25,7 +26,7 @@ def load_user(id):
 def home():
     # Variable for displaying posts only on home page.
     home_page = True
-    
+
     page = request.args.get("page", 1, type=int)
     posts = db.paginate(db.select(Post).order_by(Post.date_posted.desc()), page=page, per_page=5)
     # posts = db.session.execute(db.select(Post).order_by(Post.date_posted.desc())).scalars()
@@ -43,17 +44,10 @@ def signup():
         return redirect(url_for("user_dashboard"))
 
     if form.validate_on_submit():
-        if form.username.data == "Admin":
-            user = User(username=form.username.data,
-                        email=form.email.data,
-                        password=form.password.data,
-                        date_joined=current_datetime,
-                        _is_admin=True)
-        else:
-            user = User(username=form.username.data,
-                        email=form.email.data,
-                        password=form.password.data,
-                        date_joined=current_datetime)
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    password=form.password.data,
+                    date_joined=current_datetime)
 
         db.session.add(user)
         db.session.commit()
@@ -362,3 +356,27 @@ def page_not_found(e):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error_pages/404.html'), 404
+
+
+# ============================================================================
+# ============================================================================
+@app.route('/create_admin')
+def create_admin():
+    try:
+        if is_first_admin("Admin"):
+            abort(403)
+
+        else:
+            user = User(username="Admin",
+                        email="admin@example.com",
+                        password="admin",
+                        date_joined=current_datetime,
+                        _is_admin=True)
+
+            db.session.add(user)
+            db.session.commit()
+        flash("The Admin account has been created. You can log in now.", "success")
+        return redirect(url_for("login"))
+
+    except IntegrityError:
+        abort(403)

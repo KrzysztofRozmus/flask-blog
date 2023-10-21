@@ -37,13 +37,16 @@ class SignupForm(FlaskForm):
             return generate_password_hash(value, "scrypt")
         return value
 
-    def validate_username(self, username):
+    def validate_username(self, username: str) -> None:
         user_username_in_db = db.session.execute(db.select(User).filter_by(username=username.data)).scalar()
 
-        if user_username_in_db or username == "admin":
+        if user_username_in_db:
             raise ValidationError("That username is already taken.", "danger")
+        
+        elif username.data.startswith("admin") or username.data.startswith("Admin"):
+            raise ValidationError("You cannot take username starts with 'admin' or 'Admin'.", "danger")
 
-    def validate_email(self, email):
+    def validate_email(self, email: str) -> None:
         user_email_in_db = db.session.execute(db.select(User).filter_by(email=email.data)).scalar()
 
         if user_email_in_db:
@@ -60,14 +63,14 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField("Login")
 
-    def validate_email(self, email):
+    def validate_email(self, email: str) -> None:
         # self.user_email_in_db variable can be use throughout entire class.
         self.user_email_in_db = db.session.execute(db.select(User).filter_by(email=email.data)).scalar()
 
         if not self.user_email_in_db:
             raise ValidationError("Invalid email.", "danger")
 
-    def validate_password(self, password):
+    def validate_password(self, password: str) -> None:
         try:
             user_in_db = db.session.execute(db.select(User).filter_by(email=self.user_email_in_db.email)).scalar()
             user_password = check_password_hash(user_in_db.password, password.data)

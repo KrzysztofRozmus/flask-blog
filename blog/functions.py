@@ -1,7 +1,8 @@
-from blog import app
+from blog import app, db
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from secrets import token_hex
+from blog.models.user import User
 import os
 # import hashlib
 from PIL import Image
@@ -49,3 +50,8 @@ def delete_profile_picture(profile_pic_folder) -> None:
     profile_pic_path = os.path.join(profile_pic_folder, current_user.profile_pic)
 
     return os.remove(profile_pic_path)
+
+
+def is_first_admin(username: str) -> None:
+    user = db.session.execute(db.select(User).filter_by(username=username)).scalar()
+    return user
