@@ -1,4 +1,22 @@
 <h1 align="center">Flask Blog</h1>
+<br>
+
+This is very simple and lighweight blog where
+------------
+
+1. Blog's owner (admin) can:
+    * add and delete user
+    * change user data
+    * create, edit and delete posts
+    * edit and delete user's comment
+2. User can:
+    * register
+    * login
+    * edit it's data
+    * delete it's account
+    * change profile picture
+    * create, edit and delete comments
+
 
 
 Installation
